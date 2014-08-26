@@ -1,0 +1,49 @@
+# Atom 0.1 output in YAML format.
+# Contains Run Info, Cuts, and Efficiencies.
+# Current time: Tue Aug 19 09:48:58 2014
+
+#
+# Please acknowledge results based on Atom analyses, and cite arXiv:14xx.yyyy (http://arxiv.org/abs/14xx.yyyy).
+# Atom is a fork of Rivet. Please cite Rivet: arXiv:1003.0694 (http://arxiv.org/abs/1003.0694).
+
+Atom Run Info:
+  Save Finalstate: false
+  Save Kinematics: false
+  Number of Events: 0
+  Save Histograms: false
+  Efficiencies: false
+  Smearing: false
+  Do B Field (not implemented): false
+  Ignore Beams: false
+  Save Events: false
+Analyses:
+  ATLAS_razor_1:
+    Luminosity:
+      Luminosity Value: 35
+      Luminosity Error: 3.85
+    Cuts: ~
+    Efficiencies:
+      - Name: Efficiency of the Baseline Selection
+        Sub-process ID: 9999
+        Value: 0.1617278176948259
+        Error:
+          - Stat:
+              - -0.002400805622393469
+              - 0.002400805622393469
+      - Sub-process ID: 0
+        Name: Efficiency of the Baseline Selection
+        Value: 0.1617278176948259
+        Error:
+          - Stat:
+              - -0.002400805622393469
+              - 0.002400805622393469
+Cross section:
+  - Total Cross section Error: 0
+    Total Cross section: 10466.33061433011
+    K factor: 1
+    K factor Error: 0
+  - Sub Process ID: 9999
+    Cross section: 10466.33061433011
+    Cross section Error: 0
+    K factor: 1
+    K factor Error: 0

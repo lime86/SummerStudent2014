@@ -1,0 +1,4 @@
+addAnalysis ATLAS_razor_1
+addInput /afs/cern.ch/user/l/lmeng/work/MCFiles/events_dm012j_100k_8tev_med644gev_dm100gev.hepmc HepMC
+addOutput Atom
+launch 
