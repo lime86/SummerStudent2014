@@ -20,6 +20,7 @@
 #include "TPDF.h"
 #include "TCanvas.h"
 #include "TSystem.h"
+#include "TDirectory.h"
 #include "TROOT.h"
 
 using namespace std;
@@ -88,14 +89,12 @@ namespace Atom {
             /// @todo Book histograms here, e.g.:
             
 			///ROOT histograms
+			_f_hist = new TFile("ATLAS_razor_1.root","RECREATE");
+			
 			_h_met			= new TH1F("met", "Missing Energy", 300,0,300);
 			_h_met->GetXaxis()->SetTitle("MET (GeV)");
 			_h_met->GetYaxis()->SetTitle("Occurrence");
 			
-			_h_metTrg		= new TH1F("metTrg", "Missing Energy Trigger", 150,0,1500);
-			_h_metTrg->GetXaxis()->SetTitle("MET (GeV)");
-			_h_metTrg->GetYaxis()->SetTitle("Occurrence");
-
 			_h_vetoedEvts	= new TH1F("vetoedEvts", "Vetoed Events", 2,0,2);
 			_h_vetoedEvts->GetXaxis()->SetTitle("Vetoed Events");
 			_h_vetoedEvts->GetYaxis()->SetTitle("Occurrence");
@@ -121,9 +120,12 @@ namespace Atom {
 			_h_otherJetPt->GetYaxis()->SetTitle("Occurrence");
 	
 			_h_razor			= new TH2F("razorPlot", "Razor Plot", 200, 0., 2000., 140, 0., 1.4);
+			_h_razor->SetOption("colz");
 			_h_razor->GetXaxis()->SetTitle("M_R (GeV)");
 			_h_razor->GetYaxis()->SetTitle("R2");
 			_h_razor->GetZaxis()->SetTitle("Occurrence");
+			
+			_objList = gDirectory->GetList();
 			
 			_canvas = new TCanvas("Canvas");
 			
@@ -226,8 +228,6 @@ namespace Atom {
 			//}
 							
 
-
-            
             _effh.PassEvent("Efficiency of the Baseline Selection");			
 			
 			_h_vetoedEvts->Fill(0., weight);			
@@ -239,12 +239,20 @@ namespace Atom {
             return true;
         }
 
-
         /// Normalise histograms etc., after the run
         void finalizeLocal() {
 			_canvas->cd(0);
 			_canvas->Print("ATLAS_razor_1.pdf[", "pdf");
-	
+			
+			TList* objlist = gDirectory->GetList();
+			for( int io=0; io < objlist->GetEntries(); io++){
+				objlist->At(io)->Write();
+				objlist->At(io)->Draw();
+				_canvas->Print("ATLAS_razor_1.pdf", "pdf");	
+			}
+			
+
+			/*
 			_h_met->Draw();
 			_canvas->Print("ATLAS_razor_1.pdf", "pdf");
 			_canvas->Print("ATLAS_razor_1_met.C");	
@@ -276,15 +284,15 @@ namespace Atom {
 			_h_razor->Draw("colz");
 			_canvas->Print("ATLAS_razor_1.pdf", "pdf");
 			_canvas->Print("ATLAS_razor_1_razor.C");
+			*/
 			
 			_canvas->Print("ATLAS_razor_1.pdf]", "pdf");
-			//_canvas->Print();
 
             _luminosity = std::make_pair(35.0 / picobarn, 0.11);
             double norm = crossSection() * _luminosity.first / sumOfWeights();
 
 			logfile.close();
-			
+			_f_hist->Write();
             cout << "Finalising..."<<endl;
         }
 
@@ -301,8 +309,8 @@ namespace Atom {
 		
 		//@{
 		//ROOT histograms
+		TFile * _f_hist;
 		TH1F * _h_met;
-		TH1F * _h_metTrg;
 		TH1F * _h_vetoedEvts;
 		
 		TH1F * _h_jetMult;
@@ -312,6 +320,8 @@ namespace Atom {
 		TH1F * _h_ht;
 		
 		TH2F * _h_razor;
+		
+		TList * _objList;
 		
 		TCanvas * _canvas;
 		

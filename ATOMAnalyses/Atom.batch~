@@ -1,4 +1,0 @@
-addAnalysis ATLAS_razor_0
-addInput /afs/cern.ch/user/l/lmeng/TestChamber/PythiaShowering/events_eff.hepmc HepMC
-addOutput Atom
-launch 
