@@ -2,7 +2,7 @@
 
 export OUTDIR=/atlas/data3/userdata/lmeng/MCFiles
 
-#./PythiaBGjj.sh
+./PythiaBGjj.sh
 ./PythiaBGqq.sh
 ./Pythiabgzvv012j.sh
 

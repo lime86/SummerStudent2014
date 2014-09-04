@@ -1,5 +1,5 @@
 #! /bin/bash
-RUNDIR=PythiaBGqq
+RUNDIR=PythiaBGzvv
 #OUTDIR=/atlas/data3/userdata/lmeng/MCFiles
 
 if [ -d $RUNDIR ]; then
@@ -14,7 +14,7 @@ cd $RUNDIR
 
 gunzip events.lhe.gz
 
-OUTFILE=bgzvv012j_500k_8tev_med1tev_dm100gev_1.hepmc
+OUTFILE=bgzvv012j_8tev_2.hepmc
 export TERM=xterm
 export TERMINFO=/etc/terminfo
 

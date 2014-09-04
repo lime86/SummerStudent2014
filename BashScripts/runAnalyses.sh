@@ -6,122 +6,79 @@ export TERMINFO=/etc/terminfo
 BASE=/afs/cern.ch/user/l/lmeng
 UNIGE=/atlas/data3/userdata/lmeng/MCFiles
 
+OUTDIR=$BASE/public/ATOMAnalyses
+
 source $BASE/.bashrc
 source $BASE/local/tools/setupAtom
 
-cd $BASE/public/ATOMAnalyses
+#cd $BASE/TestChamber/ATOM8TeV
 
-###### Background ######
-
-D1=bgzvv012j
-F1=bgzvv012j_8tev_0.hepmc
-
-D2=bgwlv012j
-F2=bgwlv012j_8tev_0.hepmc
-
-D3=bgtt
-F3=bgtt_8tev_0.hepmc
-
-D4=bgqq
-F4=bgqq_8tev_0.hepmc
-
-D5=bgjj
-F5=bgjj_8tev_0.hepmc
-
-D6=bgww
-F6=bgww_8tev_0.hepmc
-
-
-###### Signal ######
-
-DM10=dm012j_10
-FDM10=dm012j_8tev_med1000_dm10_0.hepmc
-
-DM100=dm012j_100
-FDM100=dm012j_8tev_med1000_dm100_0.hepmc
-
-##################
-if ! [ -d "$D1" ]; then
-	if [ -f "$UNIGE/$F1" ]; then
-		echo "Running analysis on bgzvv012j"
-		mkdir $D1
-		cd $D1
-		atom -a ATLAS_razor_1 $UNIGE/$F1 | tee Atom.log
-		cd ..
-	fi
+if ! [ -d "$OUTDIR" ]; then
+	mkdir $OUTDIR
 fi
-##################
-if ! [ -d "$D2" ]; then
-	if [ -f "$UNIGE/$F2" ]; then
-		echo "Running analysis on bgwlv012j"
-		mkdir $D2
-		cd $D2
-		atom -a ATLAS_razor_1 $UNIGE/$F2 | tee Atom.log
-		cd ..
-	fi
-fi
-##################
-if ! [ -d "$D3" ]; then
-	if [ -f "$UNIGE/$F3" ]; then
-		echo "Running analysis on bgtt"
-		mkdir $D3
-		cd $D3
-		atom -a ATLAS_razor_1 $UNIGE/$F3 | tee Atom.log
-		cd ..
-	fi
-fi
-##################
-if ! [ -d "$D4" ]; then
-	if [ -f "$UNIGE/$F4" ]; then
-		echo "Running analysis on bgqq"
-		mkdir $D4
-		cd $D4
-		atom -a ATLAS_razor_1 $UNIGE/$F4 | tee Atom.log
-		cd ..
-	fi
-fi
-##################
-if ! [ -d "$D5" ]; then
-	if [ -f "$UNIGE/$F5" ]; then
-		echo "Running analysis on bgjj"
-		mkdir $D5
-		cd $D5
-		atom -a ATLAS_razor_1 $UNIGE/$F5 | tee Atom.log
-		cd ..
-	fi
-fi
-##################
-if ! [ -d "$D6" ]; then
-	if [ -f "$UNIGE/$F6" ]; then
-		echo "Running analysis on bgww"
-		mkdir $D6
-		cd $D6
-		atom -a ATLAS_razor_1 $UNIGE/$F6 | tee Atom.log
-		cd ..
-	fi
-fi
-##################
-if ! [ -d "$DM10" ]; then
-	if [ -f "$UNIGE/$FDM10" ]; then
-		echo "Running analysis on dm012j_10"
-		mkdir $DM10
-		cd $DM10
-		atom -a ATLAS_razor_1 $UNIGE/$FDM10 | tee Atom.log
-		cd ..
-	fi
-fi
-##################
-if ! [ -d "$DM100" ]; then
-	if [ -f "$UNIGE/$FDM100" ]; then
-		echo "Running analysis on dm012j_100"
-		mkdir $DM100
-		cd $DM100
-		atom -a ATLAS_razor_1 $UNIGE/$FDM100 | tee Atom.log
-		cd ..
-	fi
-fi
-##################
 
+cd $OUTDIR
+
+BG=(	bgzvv012j bgzvv012j_8tev_0.hepmc \
+		bgwlv012j bgwlv012j_8tev_0.hepmc \
+		bgtt bgtt_8tev_0.hepmc \
+		bgqq bgqq_8tev_0.hepmc \
+		bgjj bgjj_8tev_0.hepmc \
+		bgww bgww_8tev_0.hepmc)
+
+DM=(	Med1000_DM10 dm012j_8tev_med1000_dm10_0.hepmc \
+		Med1000_DM100 dm012j_8tev_med1000_dm100_0.hepmc)
+
+for (( i=0; i<${#BG[@]}; i++ ));
+	do
+		if ! [ -d "${BG[i]}" ]; then
+			if [ -f "$UNIGE/${BG[i+1]}" ]; then
+				echo "Running analysis on ${BG[i]}"
+				mkdir ${BG[i]}
+				cd ${BG[i]}
+				
+/bin/cat <<EOM > Atom.batch
+addAnalysis ATLAS_razor_1
+addInput $UNIGE/${BG[1]} HepMC
+addOutput Atom
+set SaveHistograms on
+set IgnoreBeams on
+launch
+EOM
+				atom-batch -b Atom.batch | tee Atom.log
+				
+				#atom -a ATLAS_razor_1 $UNIGE/${BG[1]} | tee Atom.log
+				cd ..
+			fi
+		fi
+	done
+
+	
+for i in 10 100
+	do
+		if ! [ -d "dm012j_${i}" ]; then
+			echo "No directory dm012j_${i}"
+			if [ -f "$UNIGE/dm${i}_8tev.hepmc" ]; then
+				echo "Running analysis on dm012j_${i}"
+				mkdir dm012j_${i}
+				cd dm012j_${i}
+				
+/bin/cat <<EOM > Atom.batch
+addAnalysis ATLAS_razor_1
+addInput $UNIGE/dm${i}_8tev.hepmc HepMC
+addOutput Atom
+set SaveHistograms on
+set IgnoreBeams on
+launch
+EOM
+
+				atom-batch -b Atom.batch | tee Atom.log
+				#atom -a ATLAS_razor_1 $UNIGE/dm012j_8tev_med1000_dm${i}_0.hepmc | tee Atom.log
+				cd ..
+			fi
+		fi
+	done
+		
 echo "Finished analyses."
 
 exit

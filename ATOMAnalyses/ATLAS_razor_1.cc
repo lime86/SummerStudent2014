@@ -5,7 +5,6 @@
 #include "Atom/AtomAnalysis.hh"
 #include "Atom/Detectors/Atlas.hh"
 #include "Atom/Detectors/Atlas2011.hh"
-//#include "Atom/Projections/Razor.hh"
 #include "Atom/VariableCut.hh"
 #include "Atom/EfficiencyHelper.hh"
 #include "Atom/XSecHelper.hh"
@@ -120,6 +119,7 @@ namespace Atom {
 			_h_otherJetPt->GetYaxis()->SetTitle("Occurrence");
 	
 			_h_razor			= new TH2F("razorPlot", "Razor Plot", 200, 0., 2000., 140, 0., 1.4);
+			_h_razor->Sumw2();
 			_h_razor->SetOption("colz");
 			_h_razor->GetXaxis()->SetTitle("M_R (GeV)");
 			_h_razor->GetYaxis()->SetTitle("R2");
@@ -131,8 +131,11 @@ namespace Atom {
 			
 			check = 0;
 			vetoCheck = 0;
+			nevents = 0;
+			totalWeight = 0.0;
+			srWeight = 0.0;
 			
-			logfile.open ("ATLAS_razor_1.log", ios::trunc);
+			outfile.open ("ATLAS_razor_1.log", ios::trunc);
 
 			cout << "Finished initialisation" << endl;
 
@@ -142,6 +145,8 @@ namespace Atom {
         /// Perform the per-event analysis
         bool analyzeLocal(const Event& event, const double weight) {
 			unsigned int jetMult = 0;
+			++nevents;
+			totalWeight += weight;
             
             // get jets
             const Particles jets = applyProjection<NearIsoParticle>(event, "Jets").particlesByPt(); //jets_clean
@@ -233,8 +238,9 @@ namespace Atom {
 			_h_vetoedEvts->Fill(0., weight);			
 			_h_razor->Fill(mr, r*r, weight);
 			
+			srWeight += weight;
 			++check;
-			//logfile << "Evaluated events: "<< check << ". Vetoed events: "<< vetoCheck << "|| MET = "<< met.mod() << "| Leading Jet pt = " << jets[0].momentum().pT() << "| R = " << rval <<endl;
+			//outfile << "Evaluated events: "<< check << ". Vetoed events: "<< vetoCheck << "|| MET = "<< met.mod() << "| Leading Jet pt = " << jets[0].momentum().pT() << "| R = " << rval <<endl;
 			
             return true;
         }
@@ -288,10 +294,18 @@ namespace Atom {
 			
 			_canvas->Print("ATLAS_razor_1.pdf]", "pdf");
 
-            _luminosity = std::make_pair(35.0 / picobarn, 0.11);
+			_luminosity = std::make_pair(10.5 / femtobarn, 0.04);
             double norm = crossSection() * _luminosity.first / sumOfWeights();
+            
+            outfile << "Number of events: " << nevents << endl;
+            outfile << "Cross section of all events: " << crossSection() << endl;
+            outfile << "Total weight of events: " << sumOfWeights() << endl;
+            outfile << "Total weight of all events normalised to luminosity: " << norm * totalWeight << endl;
+            outfile << "Total weight of SR events normalised to luminosity: " << norm * srWeight << endl;
+            outfile << "Acceptance in SR: " << 100 * (srWeight / totalWeight) << endl;
 
-			logfile.close();
+			outfile.close();
+						
 			_f_hist->Write();
             cout << "Finalising..."<<endl;
         }
@@ -328,8 +342,11 @@ namespace Atom {
 		//Other variables
 		unsigned int check;
 		unsigned int vetoCheck;
+		unsigned int nevents;
+		double totalWeight;
+		double srWeight;
 		
-		ofstream logfile;
+		ofstream outfile;
 		
 		
 		
@@ -345,7 +362,7 @@ namespace Atom {
 			return vec3;
 		}
 		
-		//returns the index of the pseudojet with the max invariant mass (mass2() == mod2()???)
+		//returns the index of the pseudojet with the max invariant mass
 		unsigned int getIndex (const Particles jets) {
 			double maxInvMass = 0.;
 			unsigned int maxIndex = 0;

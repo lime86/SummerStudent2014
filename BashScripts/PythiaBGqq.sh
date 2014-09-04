@@ -14,7 +14,7 @@ cd $RUNDIR
 
 gunzip events.lhe.gz
 
-OUTFILE=bgqq_500k_8tev_med1tev_dm100gev_1.hepmc
+OUTFILE=bgqq_8tev_2.hepmc
 export TERM=xterm
 export TERMINFO=/etc/terminfo
 

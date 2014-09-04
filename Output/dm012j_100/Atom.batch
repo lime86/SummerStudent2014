@@ -1,4 +1,0 @@
-addAnalysis ATLAS_razor_1
-addInput /atlas/data3/userdata/lmeng/MCFiles/dm012j_500k_8tev_med1tev_dm100gev.hepmc HepMC
-addOutput Atom
-launch 
