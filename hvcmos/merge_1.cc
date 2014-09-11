@@ -17,8 +17,6 @@
 
 #define MAXHIT 1000
 
-//first y value
-
 using namespace std;
 
 struct _hits {
@@ -33,6 +31,16 @@ struct _hits {
 	double PosZ[MAXHIT];
 };
 
+//not working yet
+/*
+int merge_1(char * input) {
+	string str = "pixelmerged.root";
+	char * output = str.c_str();
+	merge_1(input, output);
+	return 42;
+}
+*/
+
 int merge_1(char * input, char * output) {
 	gROOT->Reset();
 		
@@ -41,7 +49,10 @@ int merge_1(char * input, char * output) {
 	
 
 	TFile * f = TFile::Open(input);
-	if (f == 0) cout<<"Cannot open "<<input<<endl;
+	if (f == 0) {
+		cout<<"Cannot open "<<input<<endl;
+		return 0;
+	}
 	TDirectory * d = (TDirectory *)f->Get("Plane6");
 	TTree * t = (TTree *)d->Get("Hits");
 	

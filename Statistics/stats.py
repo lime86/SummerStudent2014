@@ -7,6 +7,7 @@ def getData(region, data):
 	with open("bkgobs.txt") as f:
 		for line in f.readlines():
 			if region in line:
+				#print region, "in line"
 				words = line.split(' ')
 				if data == "bkg":
 					return float(words[2])

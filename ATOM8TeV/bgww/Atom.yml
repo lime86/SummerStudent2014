@@ -1,6 +1,6 @@
 # Atom 0.1 output in YAML format.
 # Contains Run Info, Cuts, and Efficiencies.
-# Current time: Thu Aug 28 17:10:32 2014
+# Current time: Sun Sep  7 05:44:02 2014
 
 #
 # Please acknowledge results based on Atom analyses, and cite arXiv:14xx.yyyy (http://arxiv.org/abs/14xx.yyyy).
@@ -8,9 +8,9 @@
 
 Cross section:
   - Total Cross section Error: 0
-    Total Cross section: 34.12536263255451
     K factor: 1
     K factor Error: 0
+    Total Cross section: 34.12536263255451
   - Sub Process ID: 9999
     Cross section: 34.12536263255451
     Cross section Error: 0
@@ -19,24 +19,24 @@ Cross section:
 Analyses:
   ATLAS_razor_1:
     Efficiencies:
-      - Sub-process ID: 9999
-        Value: 0.725613346418057
+      - Name: Efficiency of the Baseline Selection
+        Sub-process ID: 9999
+        Value: 0.7251422963689892
         Error:
           - Stat:
-              - -0.001250236069305909
-              - 0.001250236069305909
-        Name: Efficiency of the Baseline Selection
+              - -0.001250902547994284
+              - 0.001250902547994284
       - Sub-process ID: 0
-        Value: 0.725613346418057
+        Value: 0.7251422963689892
         Error:
           - Stat:
-              - -0.001250236069305909
-              - 0.001250236069305909
+              - -0.001250902547994284
+              - 0.001250902547994284
         Name: Efficiency of the Baseline Selection
-    Luminosity:
-      Luminosity Value: 35
-      Luminosity Error: 3.85
     Cuts: ~
+    Luminosity:
+      Luminosity Error: 800
+      Luminosity Value: 20000
 Atom Run Info:
   Save Histograms: false
   Efficiencies: false
@@ -46,4 +46,4 @@ Atom Run Info:
   Save Events: false
   Save Finalstate: false
   Save Kinematics: false
-  Number of Events: 21800560
+  Number of Events: 25885472

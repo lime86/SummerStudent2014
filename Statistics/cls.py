@@ -14,8 +14,8 @@ except Exception:
 def cls(Nsig, errNsig, Nbkg, errNbkg, Nobs):
     distListSig = []
     distList = []
-    nb = 0
-    nsb = 0
+    nb = 0.000001	#to prevent division by zero
+    nsb = 0.000001	#to prevent division by zero
     ntot = 100000
     sigList = np.random.poisson(Nsig,ntot)
     #sigList = np.random.normal(Nsig,errNsig,ntot)

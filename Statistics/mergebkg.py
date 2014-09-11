@@ -1,111 +1,53 @@
 #! /usr/bin/env python
 
 from cls import *
-
-# region = "8TeV SR1" etc
-def getData(region, data):
+from datetime import datetime
+	
+def getBkg(region):
+	bkg = 0.
+	errtmp = 0.
 	with open("cuts.txt") as f:
 		for line in f.readlines():
 			if region in line:
 				words = line.split(' ')
-				if data == "bkg":
-					return float(words[2])
-				if data == "errbkg1":
-					return float(words[3])
-				if data == "errbkg2":
-					return float(words[4])
-				if data == "errbkg3":
-					return float(words[5])
-				if data == "obs":
-					return float(words[6])
-				if data == "lim":
-					return float(words[7])
-		else:
-			return 0
-			
-def getBkg(region):
-	bkg = 0
-	errtmp = 0
-		with open("cuts.txt") as f:
-			for line in f.readlines():
-				if region in line:
-					words = line.split(' ')
-					if words[0].startswith("bg"):
-						bkg += float(words[2])
-						errtmp += pow(float(words[3]),2)
-			print bkg, ' ', sqrt(errtmp)
-			return bkg, sqrt(errtmp)
+				if words[0].startswith("bg"):
+					#print words[0]+' '+words[1]
+					bkg += float(words[2])
+					errtmp += pow(float(words[3]),2)
+		#print bkg, ' ', sqrt(errtmp)
+		return bkg, sqrt(errtmp)
 						
 def getDM(region, mass):
 	with open("cuts.txt") as f:
 		for line in f.readlines():
 			if region in line:
 				words = line.split(' ')
-				for words[0] == "dm012j_"+str(mass)+"/ATLAS_razor_1.root":
-					print floor(float((words[2])), ' ', floor(float(words[3]))
-					return floor(float((words[2])), floor(float(words[3]))			
-					
-outfile = open("bkgobs.txt", "w")
-
-outfile.write(mass, " SR1 ", Nbkg, ' ', errNbkg, " 0 0 ", Nobs, ' ', cls, '\n')
-
-outfile.close()
-
-# region = "8TeV SR1" etc
-def get14TeVIntegral(metcut):
-	integral = 0.
-	with open("plot.csv") as f:
-		for line in f.readlines():
-			words = line.split(' ')
-			if int(words[1]) >= metcut:
-				integral += float(words[0])*(float(words[2]) - float(words[1]))
-	return integral
-
-def get14TeVData(metcut, systerrPercent, femtobarn = 20):
-	nEv = get14TeVIntegral(metcut) * (femtobarn / 20.)
-	staterr = sqrt(nEv)
-	systerr = nEv * systerrPercent
-	obs = nEv
-	lim = calcCLs(nEv, [staterr, systerr], obs, 0.95)
-	return bkg, staterr, systerr, 0, obs, lim
-
-def getAllData(region):
-	bkg = getData(region, "bkg")
-	errbkg1 = getData(region, "errbkg1")
-	errbkg2 = getData(region, "errbkg2")
-	errbkg3 = getData(region, "errbkg3")
-	obs = getData(region, "obs")
-	lim = getData(region, "lim")
-	return bkg, errbkg1, errbkg2, errbkg3, obs, lim
-
-def compareLimits(region):
-	bkg, errbkg1, errbkg2, errbkg3, obs, lim = getAllData(region)
-	ownCLs = calcCLs(bkg,[errbkg1, errbkg2, errbkg3], obs, 0.95)
-	#  print ownCLs
-	#  print lim
-	return 100 * (ownCLs - lim)/lim
+				if words[0] == "Med1000_DM"+str(mass)+"/ATLAS_razor_1.root":
+					#print float(words[2]), ' ', float(words[3])
+					#return float(words[2]), float(words[3])
+					return float(words[2])
 
 def main():
-	print calcCLs(5361,[53,268],5361,0.95)
-	print calcCLs(714,[8,36],714,0.95)
-	print calcCLs(137,[4,7],137,0.95)
-	print "8 TeV SR1 difference in limits: "
-	print compareLimits("8TeV SR1")
-	print "8 TeV SR2 difference in limits: "
-	print compareLimits("8TeV SR2")
-	print "8 TeV SR3 difference in limits: "
-	print compareLimits("8TeV SR3")
-	print "8 TeV SR4 difference in limits: "
-	print compareLimits("8TeV SR4")
-	#  print "CMS 8 TeV SR1 difference in limits: "
-	#  print compareLimits("9TeV SR1")
-	#  print "CMS 8 TeV SR2 difference in limits: "
-	#  print compareLimits("9TeV SR2")
-	#  print "CMS 8 TeV SR3 difference in limits: "
-	#  print compareLimits("9TeV SR3")
-	#  print "CMS 8 TeV SR4 difference in limits: "
-	#  print compareLimits("9TeV SR4")
-
+	outfile = open("bkgobs.txt", "w")
+	outfile.write("Dataset SR Nbkg errNbkg1 errNbkg2 errNbkg3 Obs 95%obs\n")
+	Nbkg = 0.
+	errNbkg = 0.
+	Nobs = 0.
+	cls = 0.
+	#dmMass = [0.01, 0.1, 1, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300]
+	dmMass = [10, 100]
+	for mass in dmMass:
+		for i in range(1,5):
+			Nbkg, errNbkg = getBkg("SR"+str(i))
+			Nobs = getDM("SR"+str(i), mass) + Nbkg
+			#print "SR"+str(i), Nbkg, errNbkg, Nobs
+			print datetime.now()
+			cls = calcCLs(Nbkg, [errNbkg, 0, 0], Nobs, 0.95)
+			print datetime.now(), "SR"+str(i), Nbkg, errNbkg, Nobs, cls
+			string = "8TeV_"+str(mass)+"GeV SR"+str(i)+" "+str(Nbkg)+" "+str(errNbkg)+" 0 0 "+str(Nobs)+" "+str(cls)+"\n"
+			outfile.write(string)
+	
+	outfile.close()
 
 if __name__ == "__main__":
   main()

@@ -1,4 +1,6 @@
 addAnalysis ATLAS_razor_1
-addInput /atlas/data3/userdata/lmeng/MCFiles/bgww_500k_8tev_med1tev_dm100gev.hepmc HepMC
+addInput /atlas/data3/userdata/lmeng/MCFiles/bgww_8tev_0.hepmc HepMC
 addOutput Atom
-launch 
+set SaveHistograms on
+set IgnoreBeams on
+launch

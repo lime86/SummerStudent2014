@@ -53,6 +53,7 @@ def getMassPoints(folder):
   for tmp in paths:
     tmp = tmp.replace(folder+"/", '')
     runs.append(tmp)
+    #print tmp
 
   med_list = []
   dm_list = []
@@ -63,16 +64,19 @@ def getMassPoints(folder):
       if "Med" in masspoint:
         masspoint = masspoint.replace('Med', '')
         med_list.append(int(masspoint))
+        #print masspoint
       if "DM" in masspoint:
         masspoint = masspoint.replace('DM', '')
         dm_list.append(int(masspoint))
+        #print masspoint
 
   med = list(set(med_list))
   dm = list(set(dm_list))
-
+  #print med, dm
   return med, dm
 
 def getSRs(filename):
+  print "getSRs "+filename
   with open(filename) as f:
     for line in f.readlines():
       if "Total weight of SR1 events normalised to luminosity:" in line:
@@ -87,16 +91,17 @@ def getSRs(filename):
       if "Total weight of SR4 events normalised to luminosity:" in line:
         words = line.split(' ')
         sr4 = float(words[-1])
+  #print sr1, sr2, sr3, sr4
   return sr1, sr2, sr3, sr4
 
 def nearestPointInterpolator(med, dm, folder, sqrts):
   print "nearestPointInterpolator\n"
-  sr1_lim = getData(str(sqrts)+"TeV SR1", "lim")
-  sr2_lim = getData(str(sqrts)+"TeV SR2", "lim")
-  sr3_lim = getData(str(sqrts)+"TeV SR3", "lim")
-  sr4_lim = getData(str(sqrts)+"TeV SR4", "lim")
-  
-  print sr1_lim, ' ', sr2_lim, ' ', sr3_lim, ' ', sr4_lim
+  sr1_lim = getData(str(sqrts)+"TeV_"+str(dm)+"GeV SR1", "lim")
+  sr2_lim = getData(str(sqrts)+"TeV_"+str(dm)+"GeV SR2", "lim")
+  sr3_lim = getData(str(sqrts)+"TeV_"+str(dm)+"GeV SR3", "lim")
+  sr4_lim = getData(str(sqrts)+"TeV_"+str(dm)+"GeV SR4", "lim")
+   
+  print "LIM ", sr1_lim, ' ', sr2_lim, ' ', sr3_lim, ' ', sr4_lim
   
   points = list()
   values = list()
@@ -108,7 +113,7 @@ def nearestPointInterpolator(med, dm, folder, sqrts):
       if not os.path.isfile(foldername+"/Atom.signal"):
         continue
       sr1, sr2, sr3, sr4 = getSRs(foldername+"/Atom.signal")
-      print "getSRs for med", j, " and dm", i, " \n"
+      print "nearestPointInterpolator: getSRs for med", j, " and dm", i, " \n"
       # To avoid division by 0
       sr1 += 0.00000001
       sr2 += 0.00000001
@@ -123,10 +128,14 @@ def nearestPointInterpolator(med, dm, folder, sqrts):
 
 def linearInterpolator(med, dm, folder, sqrts, fillInEmpty = None):
 	print "linearInterpolator\n"
-	sr1_lim = getData(str(sqrts)+"TeV SR1", "lim")
-	sr2_lim = getData(str(sqrts)+"TeV SR2", "lim")
-	sr3_lim = getData(str(sqrts)+"TeV SR3", "lim")
-	sr4_lim = getData(str(sqrts)+"TeV SR4", "lim")
+	for i in dm:
+		#print str(sqrts)+"TeV_"+str(i)+"GeV SR1\n"
+		sr1_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR1", "lim")
+		sr2_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR2", "lim")
+		sr3_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR3", "lim")
+		sr4_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR4", "lim")
+
+
 	limits = list()
 
 	for j in med:
@@ -141,18 +150,19 @@ def linearInterpolator(med, dm, folder, sqrts, fillInEmpty = None):
 				continue
 				
 			sr1, sr2, sr3, sr4 = getSRs(foldername+"/Atom.signal")
-			print "another getSRs med",j, " dm", i, " in linearInterpolator\n"
+			print "linearInterpolator: getSRs for med", j, " and dm", i, " \n"
 			# To avoid division by 0
 			sr1 += 0.00000001
 			sr2 += 0.00000001
 			sr3 += 0.00000001
 			sr4 += 0.00000001
+			print "sr_lim/sr ", sr1_lim/sr1, sr2_lim/sr2, sr3_lim/sr3, sr4_lim/sr4
 			mu = min(sr1_lim/sr1, sr2_lim/sr2, sr3_lim/sr3, sr4_lim/sr4)
 			limit = sqrt(sqrt(mu))
 			thisrow.append(limit)
 			
 		limits.append(thisrow)
-
+	print dm, med, limits
 	return interpolate.interp2d(dm, med, limits, kind='linear')
 
 def main():

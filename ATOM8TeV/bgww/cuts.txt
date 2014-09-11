@@ -1,0 +1,4 @@
+ATLAS_razor_1.root SR1 20440 142.969
+ATLAS_razor_1.root SR2 1460 38.2099
+ATLAS_razor_1.root SR3 68 8.24621
+ATLAS_razor_1.root SR4 20 4.47214

@@ -1,12 +1,6 @@
-[?1034hRunning ATOM with the following batch command (saved to Atom.batch).
-addAnalysis ATLAS_razor_1
-addInput /atlas/data3/userdata/lmeng/MCFiles/dm012j_500k_8tev_med1tev_dm10gev.hepmc HepMC
-addOutput Atom
-launch 
-
-[?1049h[1;37r(B[m[4l[?7h[37;1H[?1049l[?1l>Atom.AnalysisHandler: INFO  register Analysis: ATLAS_razor_1
+[?1034h[?1049h[1;24r(B[m[4l[?7hAtom.AnalysisHandler: INFO  register Analysis: ATLAS_razor_1
 Atom.ReaderHandler: INFO  register Reader: HepMC
-Atom.ReaderHandler: INFO  opening event file: /atlas/data3/userdata/lmeng/MCFiles/dm012j_500k_8tev_med1tev_dm10gev.hepmc with Reader: HepMC
+Atom.ReaderHandler: INFO  opening event file: /atlas/data3/userdata/lmeng/MCFiles/dm10_8tev.hepmc with Reader: HepMC
 Atom.AnalysisHandler: WARN  Analysis 'ATLAS_razor_1' is unvalidated: be careful, it may be broken!
 Rivet.Analysis.ATLAS_razor_1: INFO  Running ATLAS_razor_1 with Efficiency=Off, Smearing=Off, BField=Off
 Rivet.Analysis.ATLAS_razor_1: INFO  Saving ATLAS_razor_1 with Events=Off, Projections=Off, Kinematics=Off

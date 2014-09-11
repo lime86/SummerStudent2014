@@ -1,44 +1,44 @@
 # Atom 0.1 output in YAML format.
 # Contains Run Info, Cuts, and Efficiencies.
-# Current time: Thu Aug 28 15:58:00 2014
+# Current time: Sun Sep  7 01:05:06 2014
 
 #
 # Please acknowledge results based on Atom analyses, and cite arXiv:14xx.yyyy (http://arxiv.org/abs/14xx.yyyy).
 # Atom is a fork of Rivet. Please cite Rivet: arXiv:1003.0694 (http://arxiv.org/abs/1003.0694).
 
 Cross section:
-  - Total Cross section Error: 0
-    Total Cross section: 265608613.9140869
+  - Total Cross section: 265631123.4953206
+    Total Cross section Error: 0
     K factor: 1
     K factor Error: 0
   - Sub Process ID: 9999
-    Cross section: 265608613.9140869
+    Cross section: 265631123.4953206
     Cross section Error: 0
     K factor: 1
     K factor Error: 0
 Analyses:
   ATLAS_razor_1:
     Efficiencies:
-      - Sub-process ID: 9999
+      - Name: Efficiency of the Baseline Selection
+        Sub-process ID: 9999
+        Value: 0.0004847822446299349
         Error:
           - Stat:
-              - -4.157467112477431e-05
-              - 4.157467112477431e-05
-        Name: Efficiency of the Baseline Selection
-        Value: 0.0004885111384079492
+              - -2.178405932707698e-05
+              - 2.178405932707698e-05
       - Sub-process ID: 0
-        Value: 0.0004885111384079492
+        Value: 0.0004847822446299349
         Error:
           - Stat:
-              - -4.157467112477431e-05
-              - 4.157467112477431e-05
+              - -2.178405932707698e-05
+              - 2.178405932707698e-05
         Name: Efficiency of the Baseline Selection
     Cuts: ~
     Luminosity:
-      Luminosity Value: 35
-      Luminosity Error: 3.85
+      Luminosity Error: 800
+      Luminosity Value: 20000
 Atom Run Info:
-  Save Histograms: true
+  Save Histograms: false
   Efficiencies: false
   Smearing: false
   Do B Field (not implemented): false
@@ -46,4 +46,4 @@ Atom Run Info:
   Save Events: false
   Save Finalstate: false
   Save Kinematics: false
-  Number of Events: 1749
+  Number of Events: 1

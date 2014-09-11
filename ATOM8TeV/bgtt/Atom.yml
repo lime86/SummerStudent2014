@@ -1,6 +1,6 @@
 # Atom 0.1 output in YAML format.
 # Contains Run Info, Cuts, and Efficiencies.
-# Current time: Thu Aug 28 12:26:34 2014
+# Current time: Sat Sep  6 21:39:15 2014
 
 #
 # Please acknowledge results based on Atom analyses, and cite arXiv:14xx.yyyy (http://arxiv.org/abs/14xx.yyyy).
@@ -20,23 +20,23 @@ Analyses:
   ATLAS_razor_1:
     Efficiencies:
       - Sub-process ID: 9999
-        Value: 0.9931865025206807
+        Value: 0.993144723282177
         Error:
           - Stat:
-              - -0.0001534935360738287
-              - 0.0001534935360738287
+              - -0.0001539601770092852
+              - 0.0001539601770092852
         Name: Efficiency of the Baseline Selection
-      - Name: Efficiency of the Baseline Selection
-        Sub-process ID: 0
-        Value: 0.9931865025206807
+      - Sub-process ID: 0
+        Value: 0.993144723282177
         Error:
           - Stat:
-              - -0.0001534935360738287
-              - 0.0001534935360738287
+              - -0.0001539601770092852
+              - 0.0001539601770092852
+        Name: Efficiency of the Baseline Selection
     Cuts: ~
     Luminosity:
-      Luminosity Value: 35
-      Luminosity Error: 3.85
+      Luminosity Value: 20000
+      Luminosity Error: 800
 Atom Run Info:
   Save Histograms: false
   Efficiencies: false
