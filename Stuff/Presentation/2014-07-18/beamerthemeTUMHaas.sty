@@ -1,0 +1,91 @@
+
+\useoutertheme[width=0pt]{sidebar}
+\useoutertheme{infolines}
+\usecolortheme{whale}
+\usecolortheme{orchid}
+
+\usepackage{helvet}
+
+\RequirePackage{pgf}
+
+\pgfdeclareimage[width=1.0\paperwidth]{tum-header}{tum_header}
+\pgfdeclareimage[width=1.0\paperwidth]{tum-footer}{tum_footer}
+
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\setbeamercovered{transparent}
+
+\beamer@headheight=0.13\paperwidth
+
+
+\definecolor{oxygenorange}{HTML}{F7800A}
+\definecolor{oxygengray}{HTML}{686868}
+\definecolor{oxygenlightgray}{HTML}{EEEEEE}
+\definecolor{oxygenblue}{HTML}{236EAF}
+%\definecolor{tum_pantone540}{rgb}{0,0.2,0.34}
+\definecolor{tum_pantone540}{HTML}{00335B}
+\definecolor{tum_pantone383}{HTML}{A2AD00}
+
+\setbeamercolor*{Title bar}{fg=white}
+\setbeamercolor*{Location bar}{fg=tum_pantone540,bg=oxygenlightgray}
+\setbeamercolor*{frametitle}{parent=Title bar}
+\setbeamercolor*{block title}{bg=tum_pantone540,fg=white}
+\setbeamercolor*{block body}{bg=oxygenlightgray,fg=black}
+\setbeamercolor*{normal text}{bg=white,fg=black}
+\setbeamercolor*{section in head/foot}{bg=oxygenblue,fg=white}
+\setbeamercolor*{block title example}{bg=tum_pantone383, fg=white}
+
+
+\usecolortheme[named=tum_pantone540]{structure}
+
+\setbeamerfont{section in head/foot}{size=\tiny,series=\normalfont}
+\setbeamerfont{frametitle}{size=\Large}
+
+
+\setbeamertemplate{items}[ball]
+
+\setbeamertemplate{title page}[default][rounded=true]
+
+
+\setbeamertemplate{frametitle}
+{
+  \vskip-0.25\beamer@headheight
+  \vskip-\baselineskip
+  \vskip-0.2cm
+  \hskip0.9cm\usebeamerfont*{frametitle}\insertframetitle
+  \vskip-0.10em
+  \hskip0.9cm\usebeamerfont*{framesubtitle}\insertframesubtitle
+}
+
+\setbeamertemplate{headline}
+{
+  \pgfuseimage{tum-header}
+  \vskip -1.95cm
+  %\vskip -1cm
+  \linethickness{0.pt}
+
+  \framelatex{
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.3\beamer@headheight]{Title bar}
+    \usebeamerfont{section in head/foot}%
+    \insertsectionnavigationhorizontal{0pt}{\hskip0.22cm}{}%
+  \end{beamercolorbox}}
+
+  \framelatex{
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.7\beamer@headheight]{Title bar}
+  \end{beamercolorbox}}
+}
+
+\setbeamertemplate{footline}
+{
+
+  \pgfuseimage{tum-footer}
+  \linethickness{0.pt}
+  \vskip -0.5cm
+  \framelatex{
+  \begin{beamercolorbox}[leftskip=.35cm,wd=\paperwidth,ht=0.3\beamer@headheight,sep=0.1cm,rightskip=0.35cm]{Title bar}
+    \usebeamerfont{section in head/foot}%
+    \insertshortauthor~|~\insertshorttitle
+    \hfill
+    \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}}
+}
+

@@ -1,0 +1,15 @@
+ssh -Y lmeng@atlas.unige.ch
+cern password
+
+qsub -q veryshort myjob.sh
+
+To query status of your job use
+> qstat 
+prints a list of jobs in the batch system
+> qstat -f jobID 
+prints detailed information about one job. The jobID looks like 32454.grid02. It is printed on submission and also by qstat run without parameters.
+> qstat -q 
+prints status of the queues
+To kill all of your jobs
+
+qdel jobID

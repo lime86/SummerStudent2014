@@ -1,0 +1,39 @@
+madgraph stuff
+
+How to install:
+
+
+
+How to generate stuff:
+
+Unzip the model found in the note "Simplified model FeynRules" in the models/ directory 
+
+Import the model
+
+mg5>import model dmV_UFO
+
+Generate your process (careful with spaces)
+mg5>generate p p > g xi, xi > chi chi~  --> not working
+mg5>generate p p > g chi chi~  --> not working
+
+[If you want to decide how many orders you want for the calculation use the following, only if it's inside the model though
+
+mg5>generate p p > g xi, xi > g chi chi QED=99 QCD=99 @2 ]
+
+Set the output directory naming - you'll find
+
+mg5>output dm_mediator_g_monojet
+
+Start the production
+
+mg5>launch
+
+Tell it you want to shower with Pythia when asked by typing "1"
+
+mg5>1
+
+Change the parameter card by typing 1: CM energy, PDF and Madgraph-level cuts (set qCut=80)
+Change the run card by typing 2: mass of the chi (1 TeV for now)
+Can also change with Pythia6
+
+mg5>done

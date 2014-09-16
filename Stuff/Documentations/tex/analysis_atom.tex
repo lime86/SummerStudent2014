@@ -1,0 +1,18 @@
+atom -a Analysis_name file.hepmc
+
+
+
+Use a batch file: 
+
+\lstinline|atom -b Atom.batch|
+
+The batch file:
+\begin{lstlisting}
+
+addAnalysis ATLAS_razor_0
+addInput /afs/cern.ch/user/l/lmeng/work/MCFiles/events_500k.hepmc HepMC
+addOutput 
+set SaveHistograms on 
+launch 
+
+\end{lstlisting}

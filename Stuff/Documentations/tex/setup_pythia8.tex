@@ -1,0 +1,32 @@
+setup Pythia 8 Standalone
+
+Download and untar 
+
+\lstinline|./configure --enable-debug --enable-shared --lcgplatform=x86_64-slc6-gcc48-opt --installdir=/afs/cern.ch/user/l/lmeng/local/ --with-hepmcversion=2.06.08 --enable-gzip --with-boostpath=/afs/cern.ch/sw/lcg/external/Boost/1.55.0_python2.7/|
+
+For some reason the boostpath doesn't work.
+
+Make a setupPythia environment script:
+
+\begin{lstlisting}
+#!/bin/bash
+export PYTHIA8=/afs/cern.ch/user/l/lmeng/pythia8186
+export PYTHIA8LOCATION=/afs/cern.ch/user/l/lmeng/pythia8186
+export PYTHIA8DATA=/afs/cern.ch/user/l/lmeng/local/xmldoc
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/afs/cern.ch/sw/lcg/external/HepMC/2.06.08/x86_64-slc6-gcc48-opt/lib
+
+\end{lstlisting}
+
+Then in the CERN_SummerProject/PythiaShowering/ directory:
+
+\lstinline|make main32|
+
+\lstinline|./main32.exe main32.cmnd output_name|
+
+output_name is the desired name of the hepmc. If you want to just pipe this into ATOM or rivet without saving it, do:
+
+mkfifo /tmp/yourusername/io.fifo
+
+./main32.exe main32.cmnd /tmp/yourusername/io.fifo & atom -a DESIRED_ANALYSIS /tmp/yourusername/io.fifo
+
+Or just use an atom .batch file if you want to save histograms as well.

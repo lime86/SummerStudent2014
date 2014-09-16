@@ -1,0 +1,31 @@
+analysis
+
+Atom analysis, run it on background and data files, outputs root histograms in .root format and the same histograms as pdf file.
+
+for batch, use runAnalysis.sh, need access to /atlas/data3/userdata/lmeng/MCFiles though
+
+then run it through readtree.cc, using getCuts.sh, outputs a cuts.txt in Statistics directory and in each analysis directory a Atom.signal
+
+Format cuts.txt
+
+Filename SR Integral Error
+
+Then use the statistics scripts to read cuts.txt
+
+\lstinline|python mergebkg.py|
+
+Outputs bkgobs.txt with
+
+bla SR Nbkg errNbkg1 errNbkg2 errNbkg3 Nobs 95\%Obs
+
+where 95\%Obs is calculated by cls.py
+
+Then try 
+
+
+\lstinline|python generatePlot.py folder|
+
+to generate plot using Atom.signal and bkgobs.txt. The folder name must contain the CMS energy.
+
+
+

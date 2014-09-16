@@ -1,0 +1,43 @@
+source karl's local directory for newer version of git
+\lstinline|/afs/cern.ch/user/k/knordstr/local/git_bin/git clone https://github.com/karlnordstrom/CERN_SummerProject.git CERN_SummerProject|
+
+Or put it into \lstinline|Path| in .bashrc
+
+\lstinline|export PATH=/afs/cern.ch/user/k/knordstr/local/git_bin:$PATH|
+
+Or
+
+\lstinline|export PATH=$PATH:/afs/cern.ch/user/k/knordstr/local/git_bin|
+
+Useful commands:
+
+\lstinline|git clone https://github.com/karlnordstrom/CERN_SummerProject.git CERN_SummerProject|
+
+\lstinline|git pull [https://github.com/karlnordstrom/CERN_SummerProject.git CERN_SummerProject]| (??)
+
+\lstinline|git status|
+
+\lstinline|git checkout file1.txt file2.bla|
+
+\lstinline|git add file.*| adds files that should be committed next time.
+
+\lstinline|git commit|
+
+\lstinline|git commit -a| combines commit and add.
+
+
+-------------------
+
+in the directory:
+
+git init
+
+git add . (add all files)
+
+git commit -m "Initial commit"
+
+git remote add name url
+
+git remote -v
+
+git push origin master

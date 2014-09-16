@@ -1,0 +1,112 @@
+setup ATOM
+
+First set up your environment:
+
+setupATLAS
+localSetupGcc gcc472_x86_64_slc6
+localSetupBoost boost-1.55.0-python2.7-x86_64-slc6-gcc47
+\lstinline|export PATH=~knordstr/local/bin:$PATH| %only needed for cmake to configure
+
+Run:
+
+cmake --version
+which cmake
+
+and make sure that you're running 3.0.0 from ~knordstr/local/bin. Make sure you're not setting the path to some other cmake installion in your .bashrc like I'd been doing...
+
+Clone an ATOM repo by:
+
+git clone http://ianwookim.org/git ATOM
+
+Go to the freshly cloned ATOM repo and:
+
+mkdir build
+cd build
+ccmake ..
+
+LM: In the empty cache, press 'c' to configure.
+
+Now this is the nasty part. Press 't' to turn on the advanced mode, and change the following variables to these values:
+
+LM: change these two first:
+
+CMAKE_CXX_COMPILER=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/Gcc/gcc472_x86_64_slc6/slc6/gcc47/bin/g++
+
+CMAKE_C_COMPILER=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/Gcc/gcc472_x86_64_slc6/slc6/gcc47/bin/gcc
+
+LM: then configure again, you will get a message saying your cache will be deleted because of these two new values. configure again, these two values will remain and now change the rest of them
+
+LM: Boost_DIR=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/
+
+(LM: optional) Boost_FILESYSTEM_LIBRARY=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/lib/libboost_filesystem.so
+
+Boost_FILESYSTEM_LIBRARY_DEBUG=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/lib/libboost_filesystem.so
+
+Boost_FILESYSTEM_LIBRARY_RELEASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/lib/libboost_filesystem.so
+
+Boost_INCLUDE_DIR=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/include/
+
+Boost_LIBRARY_DIR=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/lib/
+
+(LM: optional) Boost_SYSTEM_LIBRARY=
+/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/lib/libboost_system.so
+
+Boost_SYSTEM_LIBRARY_DEBUG=
+/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/lib/libboost_system.so
+ 
+
+Boost_SYSTEM_LIBRARY_RELEASE=
+/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/boost/boost-1.55.0-python2.7-x86_64-slc6-gcc47/boost-1.55.0-python2.7-x86_64-slc6-gcc47/lib/libboost_system.so
+
+CMAKE_CXX_COMPILER=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/Gcc/gcc472_x86_64_slc6/slc6/gcc47/bin/g++
+
+CMAKE_C_COMPILER=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/x86_64/Gcc/gcc472_x86_64_slc6/slc6/gcc47/bin/gcc
+
+CMAKE_INSTALL_PREFIX=/where/you/want/to/install
+
+CYTHON_EXECUTABLE=/afs/cern.ch/user/k/knordstr/local/bin/cython
+
+ENABLE_TESTS=OFF
+
+FastJet_CONFIG_EXECUTABLE=/afs/cern.ch/user/k/knordstr/local/bin/fastjet-config
+
+FastJet_FASTJETPLUGINS_LIBRARY=/afs/cern.ch/user/k/knordstr/local/lib/libfastjetplugins.so
+
+FastJet_FASTJETTOOLS_LIBRARY=/afs/cern.ch/user/k/knordstr/local/lib/libfastjettools.so
+
+FastJet_FASTJET_LIBRARY=/afs/cern.ch/user/k/knordstr/local/lib/libfastjet.so
+
+FastJet_INCLUDE_DIRS=/afs/cern.ch/user/k/knordstr/local/include
+
+FastJet_SISCONE_LIBRARY=/afs/cern.ch/user/k/knordstr/local/lib/libsiscone.so
+
+FastJet_SISCONE_SPHERICAL_LIBRARY=/afs/cern.ch/user/k/knordstr/local/lib/libsiscone_spherical.so
+
+HEPMC_INCLUDE_DIR=/afs/cern.ch/user/k/knordstr/local/include
+
+HEPMC_LIBRARIES=/afs/cern.ch/user/k/knordstr/local/lib/libHepMC.so
+
+YODA_INCLUDE_DIR=/afs/cern.ch/user/k/knordstr/local/include
+
+YODA_LIBRARY=/afs/cern.ch/user/k/knordstr/local/lib/libYODA.so
+
+YamlCpp_INCLUDE_DIR=/afs/cern.ch/user/k/knordstr/local/include
+
+YamlCpp_LIBRARY=/afs/cern.ch/user/k/knordstr/local/lib/libyaml-cpp.so
+
+for compiling the analysis:
+
+
+setupRivet
+setupATLAS
+localSetupROOT
+localSetupGcc
+
+or
+
+setupCompile
+
+for installing:
+
+setupATOM
+

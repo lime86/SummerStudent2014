@@ -1,0 +1,54 @@
+TCAD
+
+get a license (ask Mathieu Benoit), agree by replying the mail
+
+get a working space from account manager (\url{http://account.cern.ch}, max. 100\,GB)
+
+copy some scripts 
+
+login onto lxplus \lstinline|ssh lmeng@lxplus.cern.ch -Y|
+
+go to working space
+
+\lstinline|cd /afs/cern.ch/work/l/lmeng/|
+
+\lstinline|source setupTCAD.sh| or \lstinline|. setupTCAD.sh|
+
+\begin{lstlisting}
+bla
+
+\end{lstlisting}
+
+to start \lstinline|swb &| for \emph{Sentaurus Workbench}
+
+http://web.stanford.edu/class/ee328/swb/swb\_d.html for a tutorial
+
+In Sentaurus Workbench, parameters can be defined and multiple values can be assigned to them to create splits in experiments (simulations). Each value of a parameter creates an additional experiment; therefore, for N values of a parameter, there are N experiments. For two parameters, P1 and P2, with M and N values, respectively, there are M x N possible experiments.
+
+The creation of different scenarios is particularly helpful when many parameters are used. The resulting experiments can be classified into separate scenarios to represent different physical situations.
+
+Extensions $\rightarrow$ Commandline prompt here
+
+All interactive operations associated with running a project can be accomplished at a UNIX prompt. The commands for submitting jobs, preprocessing, and cleaning up project directories are 
+
+\lstinline|gsub (gjob)| submitting jobs
+\lstinline|spp| proprocessing
+\lstinline|gcleanup|
+
+
+For more information about the commands executed (at the prompt), refer to the Sentaurus Workbench User Guide or use the UNIX command:
+
+> <command> -h[elp]
+for example:
+
+> gsub -h
+
+
+Node navigation
+
+ a colon (:) is the operator used to navigate between different nodes within the same tool of the project.
+ a vertical bar (|) is the operator to navigate between different tool nodes in the project.
+
+
+
+

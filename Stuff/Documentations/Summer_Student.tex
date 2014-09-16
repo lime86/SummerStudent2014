@@ -1,0 +1,244 @@
+\documentclass[twoside,11pt,a4paper]{book}
+
+%%%%%%%%%%%%%%%%%% Draft watermark
+\usepackage{draftwatermark}
+\SetWatermarkText{}
+\SetWatermarkLightness{0.9}
+\SetWatermarkScale{1.2}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{calc}
+\usepackage{acronym}
+\usepackage{upgreek}
+%\usepackage[doublespacing]{setspace}
+
+%%%%% Packages needed for macros %%%%%
+\usepackage{macros}
+\usepackage{ifthen}
+\usepackage{rotating}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%% PAGE SETTINGS %%%%%
+\usepackage{lscape} %certain pages can be landscape using landscape environment
+\usepackage[top = 40mm, bottom = 40mm]{geometry}
+%\usepackage{geometry}
+\geometry{bindingoffset=20mm}
+\geometry{textwidth=140mm}
+%\geometry{textheight=600pt}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}{
+\fancyhead[LE,RO]{\sectionmark}
+\fancyhead[CE,CO]{\leftmark}
+\fancyhead[RE,LO]{}
+\fancyfoot[LO,RE]{}
+\fancyfoot[CE,CO]{\thepage}
+\fancyfoot[LE,RO]{}
+}
+
+\fancypagestyle{unfancy}{
+\fancyhead[LE,RO]{}
+\fancyhead[CE,CO]{}
+\fancyhead[RE,LO]{}
+\fancyfoot[LO,RE]{}
+\fancyfoot[CE,CO]{\thepage}
+\fancyfoot[LE,RO]{}
+}
+
+\setlength\parindent{0pt}
+%%%%% END OF PAGE SETTINGS %%%%%
+
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{65mm}
+\renewcommand{\epigraphsize}{\footnotesize}
+
+\usepackage{todonotes}
+\newcommand\wtf[1]{\textcolor{red}{#1}}
+
+\usepackage[titletoc]{appendix}
+\usepackage{longtable}
+%\usepackage[nottoc]{tocbibind} %adds bibliography to toc
+
+
+\usepackage{cmap}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T2A,T1]{fontenc}
+\usepackage{CJK} %chinese
+
+
+\usepackage{float}
+\usepackage{bbold}
+\usepackage{graphicx}
+\usepackage[labelfont=bf]{caption}
+\usepackage{mathptmx, helvet, courier, subcaption}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage[fixlanguage]{babelbib}
+\selectbiblanguage{english}
+\usepackage{listings}
+\lstset{
+basicstyle=\ttfamily,
+numbers=left,
+showstringspaces=false,
+language=C,
+commentstyle=\itshape\color{darkgray},
+keywordstyle=\bfseries\color{red},
+stringstyle=\color{green},
+backgroundcolor=\color{lightgray},
+breaklines=true,
+breakautoindent=true,
+columns=flexible,
+frame=single,
+captionpos=b,
+xleftmargin=1em,
+xrightmargin=1em,
+aboveskip=5pt,
+numberstyle=\tiny, 
+numbersep=5pt
+}
+
+\usepackage{hyperref}
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1} {key2} {key3}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=black,          % color of internal links (change box color with linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+%    filecolor=magenta,      % color of file links
+    urlcolor=blue           % color of external links
+}
+\usepackage{url}
+%\usepackage[hyphenbreaks]{breakurl}
+%\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{indentfirst}
+\graphicspath{{img/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\newcommand{\thauthor}{Lingxin Meng}
+\newcommand{\thtitle}{Development of a CubeSat Detector}
+\newcommand{\thsubtitle}{for Measuring the Low-Energy Antiproton Flux in Low Earth Orbit}
+%\setcounter{tocdepth}{4}
+
+\begin {document}
+\pagestyle{fancy}
+\title{\thtitle \thsubtitle}
+\author{\thauthor}
+\date{\today}
+
+\pagenumbering{Roman}
+
+\begin{titlepage}
+	\thispagestyle{empty}
+%	\input{./tex/title.tex}
+	\clearpage
+\end{titlepage}
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+\newpage
+\thispagestyle{empty}
+\begin{center}
+	\begin{minipage}[c][150mm][c]{100mm}
+%		\input{./tex/abstract.tex}
+	\end{minipage}
+\end{center}
+
+\acresetall 
+\clearpage
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+\tableofcontents
+
+\clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\chapter{Introduction}
+	\label{sec:introduction}
+	%\input{./tex/introduction.tex}
+	\section{Project Outline}
+	%\input{./tex/project_outline.tex}
+
+\chapter{Dark Matter}
+	\label{chap:dm}
+	\epigraph{\hfill 42}{}
+	\section{Setup Software on lxplus}
+		\label{sec:antiproton_sources}
+		\subsection{Setup Git}
+		\input{./tex/setup_git.tex}
+		\subsection{Setup Lxplus}
+		\input{./tex/setup_lxplus.tex}
+		\subsection{Setup MadGraph}
+		\input{./tex/setup_madgraph.tex}
+		\subsection{Setup Rivet}
+		\input{./tex/setup_rivet.tex}
+		\subsection{Other tools}
+		\input{./tex/setup_git.tex}
+		
+	\section{Run Analysis}
+		\subsection{The CERN Batch System}
+		\input{./tex/batch.tex}
+		\subsection{Rivet Analysis}
+		\input{./tex/analysis_rivet.tex}
+		
+	
+\clearpage
+
+\chapter{TCAD}
+	\label{chap:tcad}
+	\section{Setup and run TCAD}
+		\input{./tex/setup_tcad.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{roman}
+
+\clearpage
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+
+\newpage
+\pagestyle{unfancy}
+\chapter*{List of Acronyms}
+\addcontentsline{toc}{chapter}{List of Acronyms}
+\acresetall
+\begin{acronym}
+	%\input{./tex/acronyms.tex}
+\end{acronym}
+
+\newpage
+\pagestyle{fancy}
+%\bibliography{thesis}
+\addcontentsline{toc}{chapter}{Bibliography}
+%\bibliographystyle{abbrv}
+\bibliographystyle{unsrt}
+
+
+\newpage
+\pagestyle{unfancy}
+\chapter*{Own Contributions}
+%\input{./tex/own_contributions.tex}
+
+\newpage
+\chapter*{Acknowledgements}
+%\input{./tex/acknowledgements.tex}
+\end{document}

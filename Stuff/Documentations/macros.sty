@@ -1,0 +1,731 @@
+\ProvidesPackage{macros}[]
+
+
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+%\usepackage{ifthen}
+%\usepackage{rotating}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% layout
+
+% placeholder dummy text
+\newcommand{\placeholdertext}{ Lorem ipsum doret sit amet silivren
+  plen miriel. A elbereth gilthonien sit emthen se pirion. A Elbereth
+  gilthonien. Lorem ipsum doret sit amet silivren plen miriel. A
+  elbereth gilthonien sit emthen se pirion. A Elbereth gilthonien.
+  Dorem ipsum doilivren plen miriel. A elbereth gilthonien sit emthen
+  se pirion. A Elbereth gilthonien. Lorem ipsum doret sit amet
+  silivrlbereth gilthonien sit emthen se pirion. A Elbereth
+  gilthonien.
+
+  Porem ipsum doret sit amet silivren pllbereth gilthonien sit emthen
+  se pirion. A Elbereth gilthonien. Lorem ipsum doret n miriel. A
+  elbereth gilthonien sit emthen se pirion. A Elbereth gilthonien.
+
+  Sorem ipsum doret sitbereth gilthonien sit emthen se pirion. A
+  Elbereth gilthonien. Lorem ipsum doret sit amet silivren plen
+  miriel. A elbereth gilthonien sit emthen se pirion. A Elbereth
+  gilthonien.}
+
+
+% alert notes
+\newcommand{\alertnote}[1]{
+  \begingroup\reset@font\alertnotefont
+  %%\color{red}
+  \alertnotebegin
+  \ignorespaces $\rhd$#1\relax$\lhd$
+  \alertnoteend
+  %%\color{black}
+  \endgroup
+}
+\newcommand{\alertnotebegin}{%
+  \leavevmode
+  \vadjust{\vbox to\z@{\vss\llap
+    {\raise1ex\hbox{\footnotesize$\bigtriangledown$}\ \ }}}%
+}
+\newcommand{\alertnoteend}{%
+  \leavevmode
+  \vadjust{\vbox to\z@{\vss\llap
+    {\hbox{\footnotesize$\bigtriangleup$}\ \ }\vss}}%
+}
+\newcommand{\alertnotefont}{\footnotesize\sffamily}
+
+
+% line split without hyphen
+\newcommand{\T}{\discretionary{}{}{}}
+\DeclareRobustCommand{\ph}[1]{\mbox{}\phantom{#1}}
+
+
+% pictures
+\newlength{\plotwidth}
+\setlength{\plotwidth}{0.65\textwidth}
+\newlength{\bigplotwidth}
+\setlength{\bigplotwidth}{0.9\textwidth}
+\newlength{\halfplotwidth}
+\setlength{\halfplotwidth}{0.49\textwidth}
+\newlength{\thirdplotwidth}
+\setlength{\thirdplotwidth}{0.33\textwidth}
+
+
+
+
+\newcommand{\oneplot}[5][]{%
+  \begin{figure}[!thbp]
+    \begin{center}
+      \ifthenelse{\equal{#1}{huge}}
+      {\includegraphics[width=1\textwidth]{#2}}
+      {%
+        \ifthenelse{\equal{#1}{big}}
+        {\includegraphics[width=\bigplotwidth]{#2}}
+        {%
+          \ifthenelse{\equal{#1}{half}}
+           {\includegraphics[width=\halfplotwidth]{#2}}
+            {%
+              \ifthenelse{\equal{#1}{}}
+              {\includegraphics[width=\plotwidth]{#2}}
+              {\includegraphics[width=#1]{#2}}
+            }
+          }
+        }
+      \caption[#3]{#4}
+      \label{fig:#5}
+    \end{center}
+  \end{figure}
+}
+
+
+\newcommand{\sidewaysplot}[5][]{%
+  \begin{sidewaysfigure}[!htbp]
+    \begin{center}
+      \ifthenelse{\equal{#1}{}}
+      {\includegraphics[width=\textwidth]{#2}}
+      {\includegraphics[width=#1]{#2}}
+      \caption[#3]{#4}
+      \label{fig:#5}
+    \end{center}
+  \end{sidewaysfigure}
+}
+\newcommand{\twoplot}[6][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\halfplotwidth]{#2}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#3}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a) \hspace{.5\textwidth} (b)}}
+      {\\}
+      \caption[#4]{#5}
+      \label{fig:#6}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\twoplotontop}[6][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\plotwidth]{#2}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a)}}
+      {\\}
+      \includegraphics[width=\plotwidth]{#3}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (b)}}
+      {\\}
+      \caption[#4]{#5}
+      \label{fig:#6}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\twoplotontopbig}[6][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\bigplotwidth]{#2}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a)}}
+      
+      {\\}
+      
+      \includegraphics[width=\bigplotwidth]{#3}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (b)}}
+      {\\}
+      \caption[#4]{#5}
+      \label{fig:#6}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\twoplotsep}[8]{%
+  \begin{figure}[!htbp]
+    \begin{minipage}[t]{\halfplotwidth}
+      \begin{center}
+        \includegraphics[width=\textwidth]{#1}
+        \caption[#2]{#3}
+        \label{fig:#4}
+      \end{center}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{\halfplotwidth}
+      \begin{center}
+        \includegraphics[width=\textwidth]{#5}
+        \caption[#6]{#7}
+        \label{fig:#8}
+      \end{center}
+    \end{minipage}
+  \end{figure}
+}
+\newcommand{\threeplot}[7][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\halfplotwidth]{#2}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a)}}
+      {\\}
+      \includegraphics[width=\halfplotwidth]{#3}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#4}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (b) \hspace{.5\textwidth} (c)}}
+      {\\}
+      \caption[#5]{#6}
+      \label{fig:#7}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\threeplotinv}[7][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\halfplotwidth]{#2}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#3}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a) \hspace{.5\textwidth} (b)}}
+      {\\}
+      \includegraphics[width=\halfplotwidth]{#4}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (c)}}
+      {\\}
+      \caption[#5]{#6}
+      \label{fig:#7}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\threeplotontop}[7][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \ifthenelse{\equal{#1}{big}}
+      {\includegraphics[width=\bigplotwidth]{#2}}
+      {%
+        \ifthenelse{\equal{#1}{half}}
+        {\includegraphics[width=\halfplotwidth]{#2}}
+        {%
+          \ifthenelse{\equal{#1}{}}
+          {\includegraphics[width=\plotwidth]{#2}}
+          {\includegraphics[width=#1]{#2}}
+        }
+      }
+      
+      \ifthenelse{\equal{#1}{big}}
+      {\includegraphics[width=\bigplotwidth]{#3}}
+      {%
+        \ifthenelse{\equal{#1}{half}}
+        {\includegraphics[width=\halfplotwidth]{#3}}
+        {%
+          \ifthenelse{\equal{#1}{}}
+          {\includegraphics[width=\plotwidth]{#3}}
+          {\includegraphics[width=#1]{#3}}
+        }
+      }
+      
+      \ifthenelse{\equal{#1}{big}}
+      {\includegraphics[width=\bigplotwidth]{#4}}
+      {%
+        \ifthenelse{\equal{#1}{half}}
+        {\includegraphics[width=\halfplotwidth]{#4}}
+        {%
+          \ifthenelse{\equal{#1}{}}
+          {\includegraphics[width=\plotwidth]{#4}}
+          {\includegraphics[width=#1]{#4}}
+        }
+      }
+      
+      \caption[#5]{#6}
+      \label{fig:#7}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\threeplotrow}[7][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\thirdplotwidth]{#2}
+      \includegraphics[width=\thirdplotwidth]{#3}
+      \includegraphics[width=\thirdplotwidth]{#4}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a) \hspace{.2875\textwidth} (b) \hspace{.2875\textwidth} (c)}}
+      {\\}
+      \caption[#5]{#6}
+      \label{fig:#7}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\fourplot}[8][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\halfplotwidth]{#2}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#3}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a) \hspace{.5\textwidth} (b)}}
+      {\\}
+      \includegraphics[width=\halfplotwidth]{#4}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#5}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (c) \hspace{.5\textwidth} (d)}}
+      {\\}
+      \caption[#6]{#7}
+      \label{fig:#8}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\fiveplot}[9][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\halfplotwidth]{#2}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#3}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a) \hspace{.5\textwidth} (b)}}
+      {\\}
+      \includegraphics[width=\halfplotwidth]{#4}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#5}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (c) \hspace{.5\textwidth} (d)}}
+      {\\}
+      \includegraphics[width=\halfplotwidth]{#6}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (e)}}
+      {\\}
+      \caption[#7]{#8}
+      \label{fig:#9}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\sixplot}[9][]{%
+  \begin{figure}[!htbp]
+    \begin{center}
+      \includegraphics[width=\halfplotwidth]{#2}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#3}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (a) \hspace{.5\textwidth} (b)}}
+      {\\}
+      \includegraphics[width=\halfplotwidth]{#4}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#5}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (c) \hspace{.5\textwidth} (d)}}
+      {\\}
+      \includegraphics[width=\halfplotwidth]{#6}
+      \hfill
+      \includegraphics[width=\halfplotwidth]{#7}
+      \ifthenelse{\equal{#1}{label}}
+      {\centerline{\footnotesize\sffamily\bfseries (e) \hspace{.5\textwidth} (f)}}
+      {\\}
+      \caption[#8]{#9}
+   %   \sixplotext
+\label{fig:#1}
+    \end{center}
+  \end{figure}
+}
+\newcommand{\sixplotext}[1]{%
+  \label{fig:#1}
+}
+
+
+% references
+\newcommand{\figref}[1]{{fig.~\ref{fig:#1}}}
+\newcommand{\figrefshort}[1]{{\ref{fig:#1}}}
+\newcommand{\Figref}[1]{{Fig.~\ref{fig:#1}}}
+\newcommand{\figrefpage}[1]{{fig.~\ref{fig:#1} (page~\pageref{fig:#1})}}
+\newcommand{\Figrefpage}[1]{{Fig.~\ref{fig:#1} (page~\pageref{fig:#1})}}
+\newcommand{\figrefrange}[2]{{fig.~\ref{fig:#1} to~\ref{fig:#2}}}
+\newcommand{\Figrefrange}[2]{{Fig.~\ref{fig:#1} to~\ref{fig:#2}}}
+\newcommand{\equref}[1]{{eq.~\eqref{eq:#1}}}
+\newcommand{\equrefshort}[1]{{\eqref{eq:#1}}}
+\newcommand{\Equref}[1]{{Eq.~\eqref{eq:#1}}}
+\newcommand{\equrefpage}[1]{{eq.~\eqref{eq:#1} (page~\pageref{eq:#1})}}
+\newcommand{\Equrefpage}[1]{{Eq.~\eqref{eq:#1} (page~\pageref{eq:#1})}}
+\newcommand{\equrefrange}[2]{{eq.~\eqref{eq:#1} to~\eqref{eq:#2}}}
+\newcommand{\Equrefrange}[2]{{Eq.~\eqref{eq:#1} to~\eqref{eq:#2}}}
+\newcommand{\tabref}[1]{{table~\ref{tab:#1}}}
+\newcommand{\Tabref}[1]{{Table~\ref{tab:#1}}}
+\newcommand{\tabrefpage}[1]{{table~\ref{tab:#1} (page~\pageref{tab:#1})}}
+\newcommand{\Tabrefpage}[1]{{Table~\ref{tab:#1} (page~\pageref{tab:#1})}}
+\newcommand{\tabrefshort}[1]{{\ref{tab:#1}}}
+\newcommand{\chapref}[1]{{chapter~\ref{chap:#1}}}
+\newcommand{\Chapref}[1]{{Chapter~\ref{chap:#1}}}
+\newcommand{\secref}[1]{{section~\ref{sec:#1}}}
+\newcommand{\Secref}[1]{{Section~\ref{sec:#1}}}
+\newcommand{\subsecref}[1]{{subsection~\ref{subsec:#1}}}
+\newcommand{\subsecrefs}[1]{{subsections~\ref{subsec:#1}}}
+\newcommand{\subsecrefshort}[1]{{\ref{subsec:#1}}}
+\newcommand{\Subsecref}[1]{{Subsection~\ref{subsec:#1}}}
+\newcommand{\subsubsecref}[1]{{subsection~\ref{subsubsec:#1}}}
+\newcommand{\subsubsecrefshort}[1]{{\ref{subsubsec:#1}}}
+\newcommand{\appref}[1]{{appendix~\ref{app:#1}}}
+\newcommand{\Appref}[1]{{Appendix~\ref{app:#1}}}
+
+
+% macros for text size operators:
+\def\tstackrel#1#2{\stackrel{\textstyle#1}{#2}}
+\def\dstackrel#1#2{\stackrel{\displaystyle#1}{#2}}
+\def\sstackrel#1#2{\stackrel{\scriptstyle#1}{#2}}
+\def\ssstackrel#1#2{\stackrel{\scriptscriptstyle#1}{#2}}
+% macros for display size operators:
+\newcommand{\dtext}[1]{\ensuremath{\displaystyle \text{#1}}}
+\def\dint{\mathop{\displaystyle \int\limits}}
+\def\diint{\mathop{\displaystyle \iint\limits}}
+\def\diiint{\mathop{\displaystyle \iiint\limits}}
+\def\diiiint{\mathop{\displaystyle \iiiint\limits}}
+\def\didotsint{\mathop{\displaystyle \idotsint\limits}}
+\def\doint{\mathop{\displaystyle \oint\limits}}
+\def\dsum{\mathop{\displaystyle \sum\limits}}
+\def\dprod{\mathop{\displaystyle \prod\limits}}
+\def\dbigcap{\mathop{\displaystyle \bigcap }}
+\def\dbigwedge{\mathop{\displaystyle \bigwedge }}
+\def\dbigoplus{\mathop{\displaystyle \bigoplus }}
+\def\dbigodot{\mathop{\displaystyle \bigodot }}
+\def\dbigsqcup{\mathop{\displaystyle \bigsqcup }}
+\def\dcoprod{\mathop{\displaystyle \coprod }}
+\def\dbigcup{\mathop{\displaystyle \bigcup }}
+\def\dbigvee{\mathop{\displaystyle \bigvee }}
+\def\dbigotimes{\mathop{\displaystyle \bigotimes }}
+\def\dbiguplus{\mathop{\displaystyle \biguplus }}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% names
+\newcommand{\cern}{CERN}
+\newcommand{\sps}{SPS}
+\newcommand{\hmc}{HMC}
+\newcommand{\cheops}{CHEOPS}
+\newcommand{\compass}{COMPASS}
+\newcommand{\hermes}{HERMES}
+\newcommand{\babar}{{\rmfamily \slshape B{\small A}B{\small AR}}}
+\newcommand{\belle}{Belle}
+\newcommand{\cdf}{CDF}
+\newcommand{\dzero}{D$\emptyset$}
+\newcommand{\fone}{\ensuremath{\mathcal{F}}1}
+\newcommand{\paw}{PAW}
+\newcommand{\minuit}{MINUIT}
+\newcommand{\cpp}{C++}
+\newcommand{\ROOT}{ROOT}
+\newcommand{\geant}{GEANT}
+\newcommand{\comgeant}{COMgeant}
+\newcommand{\DATE}{DATE}
+\newcommand{\coral}{CORAL}
+\newcommand{\traffic}{TraFFiC}
+\newcommand{\phast}{PHAST}
+\newcommand{\mdst}{mDST}
+\newcommand{\udst}{{\textmu}DST}
+\newcommand{\ndst}{nDST}
+\newcommand{\mysql}{MySQL}
+\newcommand{\qcd}{QCD}
+\newcommand{\pqcd}{pQCD}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% math & symbols
+
+% differential operators
+\newcommand{\D}[1]{\operatorname{d\mathnormal{#1}}}
+\newcommand{\Dquot}[2]{\dfrac{\D #1}{\D #2}}
+\newcommand{\pD}[1]{\operatorname{\partial\mathnormal{#1}}}
+\newcommand{\pDquot}[2]{\dfrac{\pD #1}{\pD #2}}
+
+
+% variables & symbols
+\renewcommand{\deg}{\ensuremath{^\circ}}
+\newcommand{\imp}{\ensuremath{\;\Longrightarrow\;}}
+\newcommand{\goesto}{\ensuremath{\longrightarrow}}
+\newcommand{\others}{\textit{et~al.}}
+\newcommand{\xBj}{\ensuremath{x_{Bj}}}
+%\newcommand{\xBj}{\ensuremath{x_B}}
+%\newcommand{\xBj}{\ensuremath{x}}
+%\newcommand{\yBj}{\ensuremath{y_B}}
+\newcommand{\yBj}{\ensuremath{y}}
+\newcommand{\xF}{\ensuremath{x_F}}
+\newcommand{\pT}{\ensuremath{p_T}}
+\newcommand{\pTD}{\ensuremath{p_T^D}}  % Armenteros p_T
+\newcommand{\vpT}{\ensuremath{\vec{p}_T}}
+\newcommand{\kT}{\ensuremath{k_\perp}}
+\newcommand{\vkT}{\ensuremath{\vec{k}_\perp}}
+\newcommand{\zh}{\ensuremath{z_h}}
+\newcommand{\xL}{\ensuremath{x_\text{Lab}}}
+\newcommand{\yL}{\ensuremath{y_\text{Lab}}}
+\newcommand{\zL}{\ensuremath{z_\text{Lab}}}
+\newcommand{\tX}{\ensuremath{\theta_x}}
+\newcommand{\tY}{\ensuremath{\theta_y}}
+\newcommand{\tZ}{\ensuremath{\theta_z}}
+\newcommand{\tL}{\ensuremath{\theta_\text{Lab}}}
+\newcommand{\cosX}{\ensuremath{\cos\theta_x}}
+\newcommand{\cosY}{\ensuremath{\cos\theta_y}}
+\newcommand{\cosZ}{\ensuremath{\cos\theta_z}}
+\newcommand{\mK}{\ensuremath{m_{\Ppip \Ppim}}}
+\newcommand{\mL}{\ensuremath{m_{\Pp \Ppim}}}
+\newcommand{\mLbar}{\ensuremath{m_{\Ppbar \Ppip}}}
+\newcommand{\mXm}{\ensuremath{m_{\PL \Ppim}}}
+\newcommand{\mXpbar}{\ensuremath{m_{\PLbar \Ppip}}}
+\newcommand{\Pol}{\ensuremath{P_{\!T}}}
+\newcommand{\Poly}{\ensuremath{P_{\!y}}}
+\newcommand{\tenpow}[2][]{%
+  \ifthenelse{\equal{#1}{}}
+  {\ensuremath{\text{10}^\text{#2}}}
+  {\ensuremath{\text{#1} \cdot \text{10}^\text{#2}}}
+}
+\newcommand{\jpc}{\ensuremath{J^{PC}}}
+
+\newcommand{\im}{\ensuremath{\text{j}}}
+
+
+% physical constants
+\newcommand{\Ce}{{\mathrm e}}                             % elementary charge
+\newcommand{\Ceps}{{\varepsilon_0}}                       % electric constant
+\newcommand{\Ch}{{h}}                                     % Planck constant
+\newcommand{\Chb}{\hbar}                                  % Planck constant divided by 2 * pi
+\newcommand{\Cc}{{c}}                                     % speed of light
+\newcommand{\Calpha}{\alpha}                              % fine structure constant
+\newcommand{\CmuB}{\tcmu_{\scriptscriptstyle \mathrm{B}}} % Bohr magneton
+\newcommand{\CmuK}{\tcmu_{\scriptscriptstyle \mathrm{K}}} % nuclear magneton
+\newcommand{\CkB}{k_{\scriptscriptstyle \mathrm{B}}}      % Boltzmann constant
+\newcommand{\oalpha}{{\overline\alpha}}
+\newcommand{\obeta}{{\overline\beta}}
+\newcommand{\ibeta}{{\beta^{-1}}}
+
+
+% special units
+\def\rkmu{{\mathsurround 0pt $\tcmu$}}
+\newcommand{\mevc}{\ensuremath{\text{MeV}\! /\! c}}             % momentum unit MeV/c
+\newcommand{\gevc}{\ensuremath{\text{GeV}\! /\! c}}             % momentum unit GeV/c
+\newcommand{\Gevc}{\ensuremath{\text{GeV}\! /\! c}}              % momentum unit GeV/c
+\newcommand{\gevcsq}{\ensuremath{(\text{GeV}\! /\! c)^2}}       % momentum^2 unit (GeV/c)^2
+\newcommand{\muevcc}{\ensuremath{\text{\textmu eV}\! /\! c^2}}  % mass unit mueV/c^2
+\newcommand{\kevcc}{\ensuremath{\text{keV}\! /\! c^2}}          % mass unit keV/c^2
+\newcommand{\mevcc}{\ensuremath{\text{MeV}\! /\! c^2}}          % mass unit MeV/c^2
+\newcommand{\gevcc}{\ensuremath{\text{GeV}\! /\! c^2}}          % mass unit GeV/c^2
+
+
+% vectors and matrices
+\newcommand{\svec}[1]{{\mbox{\mathversion{bold}$#1$}}}
+\newcommand{\lvec}[1]{{\mathsf{#1}}}
+\newcommand{\mat}[1]{{\mbox{\mathversion{bold}$#1$}}}
+
+
+% accents
+\newcommand{\pr}{^{\prime}}
+\newcommand{\PR}{{\prime}}
+
+
+% particles
+\newcommand{\antibar}[1]{% fix that always too large overline problem...
+  \mkern 3mu \overline{\mkern -3mu #1 \mkern -0.5mu} \mkern 0.5mu
+}
+
+\newcommand{\genparticle}[4]{
+\expandafter\def\csname P#1\endcsname{{\ensuremath{{\mathnormal{#2}}_{\scriptscriptstyle #3}^{\scriptscriptstyle #4}}}}
+\expandafter\def\csname P#1ex\endcsname{{\ensuremath{{\mathnormal{#2}}_{\scriptscriptstyle #3}^{\scriptscriptstyle \ast #4}}}}
+\expandafter\def\csname P#1bar\endcsname{{\ensuremath{{\antibar{\mathnormal{#2}}}_{\scriptscriptstyle #3}^{\scriptscriptstyle #4}}}}
+\expandafter\def\csname P#1exbar\endcsname{{\ensuremath{{\antibar{\mathnormal{#2}}_{\scriptscriptstyle #3}^{\scriptscriptstyle \ast #4}}}}}
+}
+\newcommand{\particle}[2]{
+\expandafter\def\csname P#1\endcsname{{\ensuremath{{\mathnormal{#2}}}}}
+\expandafter\def\csname P#1bar\endcsname{{\ensuremath{{\antibar{\mathnormal{#2}}}}}}
+}
+\newcommand{\partmzpp}[3]{
+  \genparticle{#1pp}{#2}{#3}{++}
+  \genparticle{#1p}{#2}{#3}{+}
+  \genparticle{#1m}{#2}{#3}{-}
+  \genparticle{#1z}{#2}{#3}{0}
+  \genparticle{#1pm}{#2}{}{\pm}
+  \genparticle{#1mp}{#2}{}{\mp}
+}
+\newcommand{\partzpp}[3]{
+  \genparticle{#1pp}{#2}{#3}{++}
+  \genparticle{#1p}{#2}{#3}{+}
+  \genparticle{#1z}{#2}{#3}{0}
+}
+\newcommand{\partmzp}[3]{
+  \genparticle{#1p}{#2}{#3}{+}
+  \genparticle{#1m}{#2}{#3}{-}
+  \genparticle{#1z}{#2}{#3}{0}
+  \genparticle{#1pm}{#2}{}{\pm}
+  \genparticle{#1mp}{#2}{}{\mp}
+}
+\newcommand{\partmz}[3]{
+  \genparticle{#1z}{#2}{#3}{0}
+  \genparticle{#1m}{#2}{#3}{-}
+}
+\newcommand{\partzp}[3]{
+  \genparticle{#1p}{#2}{#3}{+}
+  \genparticle{#1z}{#2}{#3}{0}
+}
+\newcommand{\partpp}[3]{
+  \genparticle{#1pp}{#2}{#3}{++}
+  \genparticle{#1p}{#2}{#3}{+}
+}
+\newcommand{\partpm}[2]{
+  \genparticle{#1p}{#2}{}{+}
+  \genparticle{#1m}{#2}{}{-}
+  \genparticle{#1pm}{#2}{}{\pm}
+  \genparticle{#1mp}{#2}{}{\mp}
+}
+% bosons
+\particle{Ph}{\gamma}
+\genparticle{vPh}{\gamma}{}{*}
+\particle{W}{W}
+\partpm{W}{W}
+\particle{Z}{Z}
+\particle{G}{G}
+% leptons
+\particle{l}{\ell}
+\partpm{l}{\ell}
+\partpm{e}{e}
+\partpm{h}{h}
+\particle{mu}{\mu}
+\particle{nu}{\nu}
+\genparticle{numu}{\nu}{\mu}{}
+\partpm{mu}{\mu}
+\partpm{tau}{\tau}
+% quarks
+\particle{qq}{q}
+\particle{qu}{u}
+\particle{qd}{d}
+\particle{qs}{s}
+\particle{qc}{c}
+\particle{qb}{b}
+\particle{qt}{t}
+% mesons
+\partmzp{pi}{\pi}{}
+\particle{pi}{\pi}
+\partmzp{K}{K}{}
+\particle{K}{K}
+\genparticle{Kl}{K}{L}{0}
+\genparticle{Ks}{K}{S}{0}
+\particle{r}{\rho}
+\particle{o}{\omega}
+\particle{phi}{\phi}
+\particle{eta}{\eta}
+\genparticle{etac}{\eta}{c}{}
+\particle{J}{J\!/\!\psi}
+\particle{psi}{\psi}
+\particle{chi}{\chi}
+\particle{U}{\Upsilon}
+\particle{Y}{\text{\rmfamily \slshape Y}}
+\partmzp{D}{D}{}
+\genparticle{D}{D}{}{}
+\partmzp{B}{B}{}
+\particle{B}{B}
+% baryons
+\particle{p}{p}
+\particle{n}{n}
+\particle{N}{N}
+\partmzpp{Delta}{\Delta}{}
+\genparticle{V}{V}{}{0}
+\particle{H}{H}  % generic hyperon
+\particle{L}{\Lambda}
+\particle{S}{\Sigma}
+\partmzp{S}{\Sigma}{}
+\particle{X}{\Xi}
+\partmzp{X}{\Xi}{}
+\genparticle{O}{\Omega}{}{-}
+
+% transverse polarization
+\newcommand{\genpolarization}[4]{
+\expandafter\def\csname PolP#1\endcsname{{\ensuremath{P_{\!T}^{{\mathnormal{#2}}_{\scriptscriptstyle #3}^{\scriptscriptstyle #4}}}}}
+\expandafter\def\csname PolP#1bar\endcsname{{\ensuremath{P_{\!T}^{{\antibar{\mathnormal{#2}}}_{\scriptscriptstyle #3}^{\scriptscriptstyle #4}}}}}
+\expandafter\def\csname PolyP#1\endcsname{{\ensuremath{P_{\!y}^{{\mathnormal{#2}}_{\scriptscriptstyle #3}^{\scriptscriptstyle #4}}}}}
+\expandafter\def\csname PolyP#1bar\endcsname{{\ensuremath{P_{\!y}^{{\antibar{\mathnormal{#2}}}_{\scriptscriptstyle #3}^{\scriptscriptstyle #4}}}}}
+}
+\newcommand{\polarizationmzp}[3]{
+  \genpolarization{#1p}{#2}{#3}{+}
+  \genpolarization{#1m}{#2}{#3}{-}
+  \genpolarization{#1z}{#2}{#3}{0}
+}
+\genpolarization{H}{H}{}{}
+\genpolarization{L}{\Lambda}{}{}
+\polarizationmzp{K}{K}{}
+\polarizationmzp{S}{\Sigma}{}
+\genpolarization{X}{\Xi}{}{}
+\polarizationmzp{X}{\Xi}{}
+\genpolarization{O}{\Omega}{}{-}
+
+
+% brackets
+\newdimen\lmr@ht\newdimen\lmr@dp\newdimen\lmr@ght\newdimen\lmr@gdp
+\def\lmrb@xdim#1#2{\setbox\z@\hbox{$\m@th#1{#2}$}\global\lmr@ght\ht\z@\global\lmr@gdp\dp\z@}
+\def\lmrb@xbrk#1#2{\hbox{$\m@th#1\left#2\setbox\z@\hbox{}\dp\z@\lmr@dp\ht\z@\lmr@ht\box\z@\right.\n@space$}}
+\newcommand{\lmr}[1]{{%
+\def\leftd##1{}\def\midd##1{}\def\rightd##1{}\def\middo##1{}%
+\expandafter\mathpalette\expandafter\lmrb@xdim{#1}\lmr@ht\lmr@ght\lmr@dp\lmr@gdp%
+\def\lmr@d##1{{\expandafter\mathpalette\expandafter\lmrb@xbrk{##1}}}%
+\def\leftd{\mathopen\lmr@d}\def\midd{\mathrel\lmr@d}\def\middo{\mathord\lmr@d}\def\rightd{\mathclose\lmr@d}%
+#1}}
+\newdimen\tmpf@ntsize
+\def\br@cksize#1#2#3{\hbox{$\m@th#1\left#2\vbox to #3\tmpf@ntsize{}\right.\n@space$}}
+\def\bracksize#1#2{{\mathchoice%
+{\tmpf@ntsize\tf@size pt\br@cksize{\displaystyle}{#1}{#2}}%
+{\tmpf@ntsize\tf@size pt\br@cksize{\textstyle}{#1}{#2}}%
+{\tmpf@ntsize\sf@size pt\br@cksize{\scriptstyle}{#1}{#2}}%
+{\tmpf@ntsize\ssf@size pt\br@cksize{\scriptscriptstyle}{#1}{#2}}}}
+\def\normdel#1{{\bracksize#1{0}}}
+\def\big#1{{\bracksize#1{0.85}}}
+\def\Big#1{{\bracksize#1{1.15}}}
+\def\bigg#1{{\bracksize#1{1.45}}}
+\def\Bigg#1{{\bracksize#1{1.75}}}
+\def\norml{\mathopen\normdel}
+\def\normm{\mathrel\normdel}
+\def\normr{\mathclose\normdel}
+\def\normmo{\mathord\normdel}
+\def\bigmo{\mathord\big}
+\def\Bigmo{\mathord\Big}
+\def\biggmo{\mathord\bigg}
+\def\Biggmo{\mathord\Bigg}
+\newcommand{\newbrackets}[3]{
+\expandafter\def\csname #1\endcsname##1{{\norml#2{##1}\normr#3}}
+\expandafter\def\csname lr#1\endcsname##1{{\left#2{##1}\right#3}}
+\expandafter\def\csname big#1\endcsname##1{{\bigl#2{##1}\bigr#3}}
+\expandafter\def\csname bigg#1\endcsname##1{{\biggl#2{##1}\biggr#3}}
+\expandafter\def\csname Big#1\endcsname##1{{\Bigl#2{##1}\Bigr#3}}
+\expandafter\def\csname Bigg#1\endcsname##1{{\Biggl#2{##1}\Biggr#3}}}
+\newcommand{\newbinbrackets}[4]{
+\expandafter\def\csname #1\endcsname##1##2{{\norml#2{##1}\normmo#3{##2}\normr#4}}
+\expandafter\def\csname lr#1\endcsname##1##2{{\lmr{\leftd#2{##1}\middo#3{##2}\rightd#4}}}
+\expandafter\def\csname big#1\endcsname##1##2{{\bigl#2{##1}\bigmo#3{##2}\bigr#4}}
+\expandafter\def\csname bigg#1\endcsname##1##2{{\biggl#2{##1}\biggmo#3{##2}\biggr#4}}
+\expandafter\def\csname Big#1\endcsname##1##2{{\Bigl#2{##1}\Bigmo#3{##2}\Bigr#4}}
+\expandafter\def\csname Bigg#1\endcsname##1##2{{\Biggl#2{##1}\Biggmo#3{##2}\Biggr#4}}}
+\newcommand{\newtribrackets}[5]{
+\expandafter\def\csname #1\endcsname##1##2##3{{\norml#2{##1}\normmo#3{##2}\normmo#4{##3}\normr#5}}
+\expandafter\def\csname lr#1\endcsname##1##2##3{{\lmr{\leftd#2{##1}\middo#3{##2}\middo#4{##3}\rightd#5}}}
+\expandafter\def\csname big#1\endcsname##1##2##3{{\bigl#2{##1}\bigmo#3{##2}\bigmo#4{##3}\bigr#5}}
+\expandafter\def\csname bigg#1\endcsname##1##2##3{{\biggl#2{##1}\biggmo#3{##2}\biggmo#4{##3}\biggr#5}}
+\expandafter\def\csname Big#1\endcsname##1##2##3{{\Bigl#2{##1}\Bigmo#3{##2}\Bigmo#4{##3}\Bigr#5}}
+\expandafter\def\csname Bigg#1\endcsname##1##2##3{{\Biggl#2{##1}\Biggmo#3{##2}\Biggmo#4{##3}\Biggr#5}}}
+\newbrackets{eval}{.}{|}
+\newbrackets{brk}{(}{)}
+\newbrackets{Brk}{[}{]}
+\newbrackets{cbrk}{\{}{\}}
+\newbrackets{set}{\{}{\}}
+\newbrackets{abs}{\vert}{\vert}
+\newbrackets{norm}{\|}{\|}
+\newbrackets{mean}{\langle}{\rangle}
+\newbrackets{erw}{\langle}{\rangle}
+\newbrackets{bra}{\langle}{|}
+\newbrackets{ket}{\vert}{\rangle}
+\newbinbrackets{braket}{\langle}{\vert}{\rangle}
+\newbinbrackets{clebsch}{(}{\vert}{)}
+\newbinbrackets{sfrac}{.}{/}{.}
+\newtribrackets{matel}{\langle}{\vert}{\vert}{\rangle}
+
+
+\endinput

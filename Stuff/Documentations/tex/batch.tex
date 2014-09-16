@@ -1,0 +1,25 @@
+There is the batch system you can use simply if you log onto lxplus. View queues you have access to:
+
+\lstinline|bqueues -u username|
+
+The queues are as following (with the normalised CPU time)
+
+8nm (8 minutes)
+1nh (1 hour)
+8nh
+1nd (1day)
+2nd
+1nw (1 week)
+2nw
+
+The run time limit is in average 4 times shorter than in real life
+
+Errors:
+
+http://information-technology.web.cern.ch/services/fe/lxbatch/howto/how-interpet-batch-job-return-codes
+
+To submit a job: \lstinline|bsub –q 1nh ~/jobs/job1.sh|
+To check the status of your jobs \lstinline|bjobs|
+To kill a job: \lstinline|bkill -J <jobname as listed with bjobs>|
+or \lstinline|bkill <jobID as listed with bjobs>|
+

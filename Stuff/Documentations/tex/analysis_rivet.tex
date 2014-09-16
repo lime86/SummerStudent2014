@@ -1,0 +1,26 @@
+You can get some help info by running rivet-mkanalysis --help, but the basic usage (to generate the files in your current directory) is rivet-mkanalysis MY\_ANALYSIS\_NAME. A three part name, separated by underscores, is a Rivet convention that we recommend you to use: the first part is the experiment name, the second is the year of publication, and the third is the IS code for the corresponding paper in the SPIRES HEP database (preceded by an "S"). So, for example, ATLAS\_2010\_S8591806 is the name for the first ATLAS minimum bias paper. You can get the SPIRES ID from a SPIRES page by clicking the "Display again" button, and looking for the number following "FIND KEY " in the search box.
+
+The script will have generated a .cc C++ source file template, and template metadata files for information about the analysis (.info) and specifications of titles, axis labels, etc. for the plots which the analysis will produce (.plot). These templates will include, if possible, extra analysis metadata such as a BibTeX publication entry in the .info file.
+
+run
+
+\lstinline|rivet --analysis=myanalysis hepmcfile.hepmc|
+
+yoda file is created containing the plots
+
+4) You’ll notice a Rivet.yoda file in the directory you’ve run on. This contains all info to make plots. However, to get some non-blank plots out, you have to hack the texfm file in your installation dir:
+
+
+local/share/Rivet/texmf/cnf/texmf.cnf
+
+
+and change the following line (see ‘more info’):
+
+
+(main\_memory = 700000 \%  $\rightarrow$ main\_memory = 70000000 \%)
+
+
+Now you can make plots with
+
+
+rivet-mkhtml Rivet.yoda

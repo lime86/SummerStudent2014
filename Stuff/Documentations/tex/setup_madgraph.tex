@@ -1,0 +1,164 @@
+\lstinline|cd "somewhere" (\$HOME or so)|
+
+1) create all the directories needed
+===========================
+\begin{lstlisting}
+mkdir DMSoft
+cd DMSoft
+mkdir Generators
+mkdir Generators/MG5
+\end{lstlisting}
+===========================
+
+2) download the software
+===========================
+\begin{lstlisting}
+wget https://launchpad.net/mg5amcnlo/2.0/2.1.0/+download/MG5_aMC_v2.1.1.tar.gz Generators/MG5/
+wget http://cp3.irmp.ucl.ac.be/downloads/Delphes-3.1.2.tar.gz Parametrization/Delphes/
+\end{lstlisting}
+===========================          
+
+
+3) untar and compile when needed
+===========================
+\begin{lstlisting}
+cd Generators/MG5
+tar -zxf MG5_aMC_v2.1.1.tar.gz 
+rm MG5_aMC_v2.1.1.tar.gz 
+
+cd ../../Parametrization/Delphes
+tar -zxf Delphes-3.1.2.tar.gz
+rm Delphes-3.1.2.tar.gz
+cd Delphes-3.1.2
+cp /afs/cern.ch/user/h/helsens/public/FCC/setup.sh .
+source setup.sh
+make -j 4
+\end{lstlisting}
+===========================
+
+
+4) run mg5
+
+\lstinline|setupATLAS|
+\lstinline|localSetupROOT|
+
+\begin{lstlisting}
+cd ../../Generators/MG5/MG5_aMC_v2_1_1/
+./bin/mg5_aMC
+\end{lstlisting}
+now you are entering the MG5 interactive command line
+
+Unzip the model found in the note "Simplified model FeynRules" in the \lstinline|models/| directory 
+
+Import the model
+
+\lstinline|mg5>import model dmV_UFO|
+
+Generate your process (careful with spaces)
+mg5>generate p p > g xi, xi > chi chi~
+mg5>generate p p > g chi chi~
+
+[If you want to decide how many orders you want for the calculation use the following, only if it's inside the model though
+
+mg5>generate p p > g xi, xi > g chi chi QED=99 QCD=99 @2 ]
+
+Set the output directory naming - you'll find
+
+\lstinline|mg5>output dm_mediator_g_monojet|
+-------------
+import model dmV_UFO
+generate p p > xi, xi > chi chi~
+add process p p > xi j, xi > chi chi~
+add process p p > xi j j, xi > chi chi~
+output Med1000_DM001
+
+import model dmV_UFO
+generate p p > z, z > vl vl~
+add process p p > z j, z > vl vl~
+add process p p > z j j, z > vl vl~
+output bgzvv012j
+
+import model dmV_UFO
+generate p p > w-, w- > l- vl~
+add process p p > w- j, w- > l- vl~
+add process p p > w- j j, w- > l- vl~
+add process p p > w+, w+ > l+ vl
+add process p p > w+ j, w+ > l+ vl
+add process p p > w+ j j, w+ > l+ vl
+output bgwlv012j
+
+import model dmV_UFO
+generate p p > w-, w- > l- vl~
+add process p p > w- j, w- > l- vl~
+add process p p > w- j j, w- > l- vl~
+add process p p > w+, w+ > l+ vl
+add process p p > w+ j, w+ > l+ vl
+add process p p > w+ j j, w+ > l+ vl
+output bgwlv012j
+
+
+import model dmV_UFO
+generate p p > t t~ 
+output bgtt
+
+
+
+import model dmV_UFO
+define w = w+ w-
+generate p p > w w
+output bgww
+
+import model dmV_UFO
+define q = u d c s t b u~ d~ c~ s~ t~ b~
+generate p p > q q
+output bgqq
+
+import model dmV_UFO
+generate p p > j j 
+output bgjj
+
+-----------
+
+
+Start the production
+
+\lstinline|mg5>launch|
+
+Tell it you want to shower with Pythia when asked by typing "1"
+
+mg5>1
+
+Change the parameter card by typing 1: mass of the (mediator) Xi (1 TeV for now), mass of chi = 100 gev
+Change the run card by typing 2: CM energy: change both beam energy, PDF, enable MLM matching (set to 1) of 80 (set xqCut=80)
+
+!!! Take care that the masses are smaller than the CM energy !!!
+Can also change with Pythia6
+
+mg5>done
+
+
+
+---------------------------------------
+start MadAnalysis
+
+edit \lstinline|ma_card.dat|
+
+\lstinline|./plot_events|
+
+enter event (.lhe file) path
+
+plot file for topdrawer in MadAnalysis folder.
+
+go to td (topdrawer folder)
+
+./td ../MadAnalysis/plots.top
+
+to generate plots.ps
+
+\lstinline|open plots.ps|
+-------------------------------------------
+
+
+
+
+
