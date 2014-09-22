@@ -35,7 +35,7 @@ def main():
 	Nobs = 0.
 	cls = 0.
 	#dmMass = [0.01, 0.1, 1, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300]
-	dmMass = [10, 100]
+	dmMass = [1, 10, 50, 100, 200, 300, 400, 500]
 	for mass in dmMass:
 		for i in range(1,5):
 			Nbkg, errNbkg = getBkg("SR"+str(i))
