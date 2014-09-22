@@ -15,13 +15,15 @@ source /afs/cern.ch/user/l/lmeng/.bashrc
 source $BASE/local/tools/setupAtom
 
 #cd $BASE/TestChamber/Statistics
-cd $BASE/public/ATOMAnalyses
-#cd $BASE/TestChamber/
+#cd $BASE/public/ATOMAnalyses
+cd $HOME/work/MedBy3
 
 for i in $( ls -d */);
 	do
-		echo "$i"
-		root -l -b "$BASE/TestChamber/Statistics/readtree.cc+(\"${i}ATLAS_razor_1.root\")"
+		if [ -f ${i}ATLAS_razor_1.root ]; then
+			echo "$i"
+			root -l -b "$BASE/TestChamber/Statistics/readtree.cc+(\"${i}ATLAS_razor_1.root\")"
+		fi
 	done
 
 mv $OUTFILE $BASE/TestChamber/Statistics/

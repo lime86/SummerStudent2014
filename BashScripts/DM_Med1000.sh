@@ -5,11 +5,12 @@ export TERMINFO=/etc/terminfo
 export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
 source /afs/cern.ch/user/l/lmeng/.bashrc
 #source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh
-#source ${ATLAS_LOCAL_ROOT_BASE}/packageSetups/atlasLocalROOTSetup.sh --rootVersion ${rootVersionVal} 5.99.06-x86_64-slc6-gcc48-opt
-source $BASE/local/tools/setupAtom
+source /afs/cern.ch/user/l/lmeng/local/tools/setupAtom
+source ${ATLAS_LOCAL_ROOT_BASE}/packageSetups/atlasLocalROOTSetup.sh --rootVersion ${rootVersionVal} 5.99.06-x86_64-slc6-gcc48-opt
 
 export WORK=/afs/cern.ch/work/l/lmeng
 export SOURCEDIR=Med1000_DM001
+
 
 NEVENTS=500000
 QCUT=80
@@ -17,12 +18,10 @@ EBEAM=4000
 MED=1000
 WIDTH=`echo "$MED/3" | bc`
 
-for DM in 1 10 50 100 200 300 400 500 600 700 800 900 1000 1100 1200 1300
+for DM in 600 700 800 900 1000 1100 1200 1300
   do
-		echo $DM
-		
 		export MGDIR=Med${MED}_DM${DM}
-		
+
 		echo "Copying MG5"
 		
 		cp -rf $WORK/MG5_aMC_v2_1_1 MG5
@@ -46,10 +45,8 @@ for DM in 1 10 50 100 200 300 400 500 600 700 800 900 1000 1100 1200 1300
 		./MG5/$SOURCEDIR/bin/generate_events -f
 
 ## save the generated lhe files, comment out for batch
-		cp -rf MG5/$SOURCEDIR $WORK/MedBy3/$MGDIR
-		
-		rm -rf MG5
-		
+		#cp -rf MG5/$SOURCEDIR $WORK/MedBy3/$MGDIR
+
 		###############Pythia 
 		
 		RUNDIR=temp
@@ -60,31 +57,33 @@ for DM in 1 10 50 100 200 300 400 500 600 700 800 900 1000 1100 1200 1300
 		fi
 
 		cp -r $HOME/PythiaShowering $RUNDIR
-		cp $WORK/MedBy3/$MGDIR/Events/run_01/events.lhe.gz $RUNDIR/
+		cp MG5/$SOURCEDIR/Events/run_02/events.lhe.gz $RUNDIR/
+		#cp $WORK/MedBy3/$MGDIR/Events/run_02/events.lhe.gz $RUNDIR/
 
 		cd $RUNDIR
 
 		gunzip events.lhe.gz
-
-/bin/cat <<EOM > Atom.batch
-addAnalysis ATLAS_razor_1
-addInput file.hepmc HepMC
-addOutput Atom
-set SaveHistograms on
-launch
-EOM
+		
+		echo "addAnalysis ATLAS_razor_1" >> Atom.batch
+		echo "addInput file.hepmc HepMC" >> Atom.batch
+		echo "addOutput Atom" >> Atom.batch
+		echo "set SaveHistograms on" >> Atom.batch
+		echo "launch" >> Atom.batch
 		
 		./main32.exe main32.cmnd file.hepmc
 		atom-batch -b Atom.batch
 		
-		if ! [ -d */ $WORK/MedBy3/$MGDIR/ ]
+		if ! [ -d $WORK/MedBy3/$MGDIR/ ]; then
 			mkdir $WORK/MedBy3/$MGDIR/
 		fi
 		
 		cp ATLAS* $WORK/MedBy3/$MGDIR/
 		cp Atom* $WORK/MedBy3/$MGDIR/
 		
+		cd ..
 		
+		rm -rf MG5
+		rm -rf $RUNDIR
 	done
 
 exit

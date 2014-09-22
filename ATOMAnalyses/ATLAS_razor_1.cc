@@ -55,25 +55,31 @@ namespace Atom {
 			gROOT->SetBatch();
             FinalState base = _atlas.finalState();
             
-            IsoElectron ele_pre = _atlas.electronBase(_atlas.mediumEleRange(), 0.2, 0.15, 0.0);
+			IsoElectron ele_pre = _atlas.electronBase(_atlas.mediumEleRange(), 0.2, 0.15, 0.0);
             FastSimFinalState<IsoElectron> ele_smear = _atlas.mediumElectron(ele_pre);
-            addProjection(ele_smear, "IsoElectrons");
-            
+            addProjection(ele_smear, "mediumElectron");
+
             IsoMuon mu_pre = _atlas.muonBase(RangeSelector(RangeSelector::TRANSVERSE_MOMENTUM, 7.0, 14000.), 0.2, 0.0, 1.8);
             FastSimFinalState<IsoMuon> mu_smear = _atlas.combinedMuon(mu_pre);
-            addProjection(mu_smear, "IsoMuons");
-            
-            JetFinalState jets_pre = _atlas.jetBase(base, 0.4, _atlas.topoJetRange() & RangeSelector(RangeSelector::TRANSVERSE_MOMENTUM, 30.0, 7000.0));
-            FastSimFinalState<JetFinalState> jets = _atlas.topoJet(jets_pre);
-            addProjection(jets, "topoJets");
-            
-            MergedFinalState lept(ele_smear, mu_smear);
-            addProjection(lept, "IsoLeptons");
+            addProjection(mu_smear, "combinedMuons");
 
-            NearIsoParticle jets_clean = _atlas.removeOverlap(jets, lept, _atlas.jetElectronSeparation());
+            JetFinalState jets_pre = _atlas.jetBase(base, 0.4, _atlas.topoJetRange() & RangeSelector(RangeSelector::TRANSVERSE_MOMENTUM,30.0,7000.0));
+            FastSimFinalState<JetFinalState> jets= _atlas.topoJet(jets_pre);
+            addProjection(jets, "topoclusterJets");
+            
+            NearIsoParticle jets_clean = _atlas.removeOverlap(jets, ele_smear, _atlas.jetElectronSeparation());
             addProjection(jets_clean, "Jets");
             
-            MergedFinalState razorparticles(jets_clean, lept); //allow a particle's uniqueness (default)
+            NearIsoParticle  ele_clean = _atlas.removeOverlap(ele_smear, jets_clean, _atlas.leptonJetSeparation());
+            addProjection(ele_clean, "IsoElectrons");
+            
+            NearIsoParticle   mu_clean = _atlas.removeOverlap(mu_smear, jets_clean, _atlas.leptonJetSeparation());
+            addProjection(mu_clean, "IsoMuons");
+            
+            MergedFinalState leptons = _atlas.leptonsMerged(mu_clean, ele_clean);
+            addProjection(leptons, "Leptons");
+            
+            MergedFinalState razorparticles(jets_clean, leptons); //allow a particle's uniqueness (default)
             addProjection(razorparticles, "RazorParticles");
             
             HTTools ht(razorparticles); //scalar sum of pt of all particles + missing Et
@@ -82,9 +88,7 @@ namespace Atom {
             MissingMomentum met = _atlas.met(base);
             addProjection(met, "MissingET");
             
-            //Razor razr(razorparticles, met);
-            //addProjection(razr, "Razor");
-            
+           
             /// @todo Book histograms here, e.g.:
             
 			///ROOT histograms
@@ -135,7 +139,7 @@ namespace Atom {
 			totalWeight = 0.0;
 			srWeight = 0.0;
 			
-			outfile.open ("ATLAS_razor_1.log", ios::trunc);
+			outfile.open ("Atom.signal", ios::trunc);
 
 			cout << "Finished initialisation" << endl;
 
@@ -150,8 +154,8 @@ namespace Atom {
             
             // get jets
             const Particles jets = applyProjection<NearIsoParticle>(event, "Jets").particlesByPt(); //jets_clean
-            const Particles eles = applyProjection< FastSimFinalState<IsoElectron> >(event, "IsoElectrons").particlesByPt();
-            const Particles mus = applyProjection< FastSimFinalState<IsoMuon> >(event, "IsoMuons").particlesByPt();
+            const Particles eles = applyProjection<NearIsoParticle>(event, "IsoElectrons").particlesByPt();
+            const Particles mus = applyProjection<NearIsoParticle>(event, "IsoMuons").particlesByPt();
             const Particles razr = applyProjection<MergedFinalState>(event, "RazorParticles").particlesByPt(); //jets_clean and leptons
             const MissingMomentum pmet = applyProjection<MissingMomentum>(event, "MissingET");
             const FourMomentum met = pmet.missingEt();
@@ -240,7 +244,7 @@ namespace Atom {
 			
 			srWeight += weight;
 			++check;
-			//outfile << "Evaluated events: "<< check << ". Vetoed events: "<< vetoCheck << "|| MET = "<< met.mod() << "| Leading Jet pt = " << jets[0].momentum().pT() << "| R = " << rval <<endl;
+			//cout << "Evaluated events: "<< check << ". Vetoed events: "<< vetoCheck << "|| MET = "<< met.mod() << "| Leading Jet pt = " << jets[0].momentum().pT() << "| R = " << rval <<endl;
 			
             return true;
         }
@@ -294,9 +298,10 @@ namespace Atom {
 			
 			_canvas->Print("ATLAS_razor_1.pdf]", "pdf");
 
-			_luminosity = std::make_pair(10.5 / femtobarn, 0.04);
+			_luminosity = std::make_pair(20 / femtobarn, 0.04);
             double norm = crossSection() * _luminosity.first / sumOfWeights();
             
+            outfile << "Norm factor: " << norm << endl;
             outfile << "Number of events: " << nevents << endl;
             outfile << "Cross section of all events: " << crossSection() << endl;
             outfile << "Total weight of events: " << sumOfWeights() << endl;

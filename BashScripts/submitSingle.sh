@@ -18,49 +18,48 @@ EBEAM=4000
 MED=1000
 DM=100
 WIDTH=`echo "$MED/3" | bc`
+	
+MGDIR=$SOURCEDIR
 
-		
-		MGDIR=$SOURCEDIR
-		
-		echo "Copying MG5"
-		
-		cp -rf $WORK/MG5_aMC_v2_1_1 MG5
-		
-		echo "Editing cards"
+echo "Copying MG5"
 
-		sed -i 's/100 = nevents/'$NEVENTS' = nevents/g' MG5/$SOURCEDIR/Cards/run_card.dat
-		sed -i 's/6500 = ebeam1/'$EBEAM' = ebeam1/g' MG5/$SOURCEDIR/Cards/run_card.dat
-		sed -i 's/6500 = ebeam2/'$EBEAM' = ebeam2/g' MG5/$SOURCEDIR/Cards/run_card.dat
-		sed -i 's/0 = ickkw/1 = ickkw/g' MG5/$SOURCEDIR/Cards/run_card.dat
-		sed -i 's/0 = xqcut/'$QCUT' = xqcut/g' MG5/$SOURCEDIR/Cards/run_card.dat
+cp -rf $WORK/MG5_aMC_v2_1_1 MG5
 
-		sed -i 's/8 1.000000e+04/8 '$MED' /g' MG5/$SOURCEDIR/Cards/param_card.dat
-		sed -i 's/9 1.000000e+02/9 '$DM'/g' MG5/$SOURCEDIR/Cards/param_card.dat
-		sed -i 's/9000010 100.000000/9000010 '$DM'/g' MG5/$SOURCEDIR/Cards/param_card.dat
-		sed -i 's/101 10000.000000/101 '$MED'/g' MG5/$SOURCEDIR/Cards/param_card.dat
-		sed -i 's/DECAY 101 1.000000e+00 # Wxi/DECAY 101 '$WIDTH' #Wxi/g' MG5/$SOURCEDIR/Cards/param_card.dat
-		
-		echo "Generating events"
-		
-		./MG5/$SOURCEDIR/bin/generate_events -f
+echo "Editing cards"
 
-		#cp -rf MG5/$SOURCEDIR $WORK/MedBy3/$MGDIR
+sed -i 's/100 = nevents/'$NEVENTS' = nevents/g' MG5/$SOURCEDIR/Cards/run_card.dat
+sed -i 's/6500 = ebeam1/'$EBEAM' = ebeam1/g' MG5/$SOURCEDIR/Cards/run_card.dat
+sed -i 's/6500 = ebeam2/'$EBEAM' = ebeam2/g' MG5/$SOURCEDIR/Cards/run_card.dat
+sed -i 's/0 = ickkw/1 = ickkw/g' MG5/$SOURCEDIR/Cards/run_card.dat
+sed -i 's/0 = xqcut/'$QCUT' = xqcut/g' MG5/$SOURCEDIR/Cards/run_card.dat
 
-		###############Pythia 
-		
-		RUNDIR=temp
+sed -i 's/8 1.000000e+04/8 '$MED' /g' MG5/$SOURCEDIR/Cards/param_card.dat
+sed -i 's/9 1.000000e+02/9 '$DM'/g' MG5/$SOURCEDIR/Cards/param_card.dat
+sed -i 's/9000010 100.000000/9000010 '$DM'/g' MG5/$SOURCEDIR/Cards/param_card.dat
+sed -i 's/101 10000.000000/101 '$MED'/g' MG5/$SOURCEDIR/Cards/param_card.dat
+sed -i 's/DECAY 101 1.000000e+00 # Wxi/DECAY 101 '$WIDTH' #Wxi/g' MG5/$SOURCEDIR/Cards/param_card.dat
 
-		if [ -d $RUNDIR ]; then
-		  echo "Output directory already exists!"
-		  exit
-		fi
+echo "Generating events"
 
-		cp -r $HOME/PythiaShowering $RUNDIR
-		cp MG5/$SOURCEDIR/Events/run_01/events.lhe.gz $RUNDIR/
+./MG5/$SOURCEDIR/bin/generate_events -f
 
-		cd $RUNDIR
+#cp -rf MG5/$SOURCEDIR $WORK/MedBy3/$MGDIR
 
-		gunzip events.lhe.gz
+###############Pythia 
+
+RUNDIR=temp
+
+if [ -d $RUNDIR ]; then
+  echo "Output directory already exists!"
+  exit
+fi
+
+cp -r $HOME/PythiaShowering $RUNDIR
+cp MG5/$SOURCEDIR/Events/run_01/events.lhe.gz $RUNDIR/
+
+cd $RUNDIR
+
+gunzip events.lhe.gz
 
 /bin/cat <<EOM > Atom.batch
 addAnalysis ATLAS_razor_1
@@ -70,18 +69,19 @@ set SaveHistograms on
 launch
 EOM
 		
-		./main32.exe main32.cmnd file.hepmc
-		atom-batch -b Atom.batch
-		
-		if ! [ -d */ $WORK/MedBy3/$MGDIR/ ]
-			mkdir $WORK/MedBy3/$MGDIR/
-		fi
-		
-		cp ATLAS* $WORK/MedBy3/$MGDIR/
-		cp Atom* $WORK/MedBy3/$MGDIR/
-		
-		
-	done
-	 rm -rf MG5
-	 rm -rf $RUNDIR
+./main32.exe main32.cmnd file.hepmc
+atom-batch -b Atom.batch
+
+if ! [ -d */ $WORK/MedBy3/$MGDIR/ ]; then
+	mkdir $WORK/MedBy3/$MGDIR/
+fi
+
+cp ATLAS* $WORK/MedBy3/$MGDIR/
+cp Atom* $WORK/MedBy3/$MGDIR/
+
+cd ..
+
+rm -rf MG5
+rm -rf $RUNDIR
+
 exit

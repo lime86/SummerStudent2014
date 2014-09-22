@@ -19,49 +19,45 @@ fi
 
 cd $OUTDIR
 
-BG=(	bgzvv012j bgzvv012j_8tev_0.hepmc \
-		bgwlv012j bgwlv012j_8tev_0.hepmc \
-		bgtt bgtt_8tev_0.hepmc \
-		bgqq bgqq_8tev_0.hepmc \
-		bgjj bgjj_8tev_0.hepmc \
-		bgww bgww_8tev_0.hepmc)
+BG=(bgzvv012j bgwlv012j	bgtt bgqq bgjj bgww)
+
+for (( i=0; i<${#BG[@]}; i++ )); do
+	if ! [ -d "${BG[i]}" ]; then
+		mkdir ${BG[i]}
+		cd ${BG[i]}
+		echo "Running analysis on ${BG[i]}"
+		
+		echo "addAnalysis ATLAS_razor_1" >> Atom.batch
+		
+		for j in $( ls $UNIGE | grep ${BG[i]} ); do
+			echo "addInput $UNIGE/$j HepMC" >> Atom.batch
+		done
+		
+		echo "addOutput Atom" >> Atom.batch
+		echo "set SaveHistograms on" >> Atom.batch
+		echo "set IgnoreBeams on" >> Atom.batch
+		echo "launch" >> Atom.batch
+		
+		atom-batch -b Atom.batch | tee Atom.log
+		
+		cd ..
+	fi
+done
 
 DM=(	Med1000_DM10 dm012j_8tev_med1000_dm10_0.hepmc \
 		Med1000_DM100 dm012j_8tev_med1000_dm100_0.hepmc)
 
-for (( i=0; i<${#BG[@]}; i++ ));
-	do
-		if ! [ -d "${BG[i]}" ]; then
-			if [ -f "$UNIGE/${BG[i+1]}" ]; then
-				echo "Running analysis on ${BG[i]}"
-				mkdir ${BG[i]}
-				cd ${BG[i]}
-				
-/bin/cat <<EOM > Atom.batch
-addAnalysis ATLAS_razor_1
-addInput $UNIGE/${BG[1]} HepMC
-addOutput Atom
-set SaveHistograms on
-set IgnoreBeams on
-launch
-EOM
-				atom-batch -b Atom.batch | tee Atom.log
-				
-				#atom -a ATLAS_razor_1 $UNIGE/${BG[1]} | tee Atom.log
-				cd ..
-			fi
-		fi
-	done
 
-	
+
 for i in 10 100
 	do
-		if ! [ -d "dm012j_${i}" ]; then
-			echo "No directory dm012j_${i}"
+	DMDIR=Med1000_DM${i}
+		if ! [ -d ${DMDIR} ]; then
+			echo "No directory $DMDIR"
 			if [ -f "$UNIGE/dm${i}_8tev.hepmc" ]; then
-				echo "Running analysis on dm012j_${i}"
-				mkdir dm012j_${i}
-				cd dm012j_${i}
+				echo "Running analysis on $DMDIR"
+				mkdir Med1000_DM${i}
+				cd Med1000_DM${i}
 				
 /bin/cat <<EOM > Atom.batch
 addAnalysis ATLAS_razor_1
@@ -73,7 +69,7 @@ launch
 EOM
 
 				atom-batch -b Atom.batch | tee Atom.log
-				#atom -a ATLAS_razor_1 $UNIGE/dm012j_8tev_med1000_dm${i}_0.hepmc | tee Atom.log
+				#atom -a ATLAS_razor_1 $UNIGE/dm012j_8tev_med1000_dm${i}_0.hepmc HepMC | tee Atom.log
 				cd ..
 			fi
 		fi
