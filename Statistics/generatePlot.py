@@ -14,7 +14,6 @@ import matplotlib.colors as mc
 
 def plotGrid(xgrid, ygrid, zs, dm, med, folder, sqrts, name = None):
   print "plotGrid\n"
-  
   font = {#'family' : 'cursive',
           #'weight' : 'bold',
           'size'   : 16}
@@ -22,8 +21,15 @@ def plotGrid(xgrid, ygrid, zs, dm, med, folder, sqrts, name = None):
   levels = [0, 2, 4, 6, 8, 10, 4*pi, 100]
   plt.contourf(xgrid,ygrid,zs, levels=levels, colors=('#9900ff', '#0000ff', '#0099ff', '#00ff99', '#00ff00', '#99ff00', '#ff9900', '#ff0000')) #reshape Z too!
   plt.xlabel("$M_\chi$ [GeV]")
-  plt.ylabel("$M_\\xi$ [GeV]")
-  plt.figtext(0.6,0.8, "$\Gamma_\\xi = M_\\xi / 8 \pi$")
+  plt.ylabel("$M_\\xi$ [GeV]", labelpad=0)
+  width = "3"
+  if "8TeV" in folder:
+    lumi = "10.5"
+  else:
+    lumi = "20"
+  plt.figtext(0.47,0.77, "$\sqrt{s} = "+str(sqrts)+"$ TeV", size = 20)
+  plt.figtext(0.48,0.7, "$\Gamma_\\xi = M_\\xi /"+width+"$", size = 20)
+  plt.figtext(0.47,0.6, "$\int\/ \mathrm{L \/ dt} = "+lumi+" \/ \mathrm{fb}^{-1}$", size = 20)
   cbar = plt.colorbar()
   ticklabels = ["0", "2", "4", "6", "8", "10", "4 $\pi$"]
   cbar.set_ticklabels(ticklabels)
@@ -44,7 +50,6 @@ def plotGrid(xgrid, ygrid, zs, dm, med, folder, sqrts, name = None):
   else:
     plt.savefig(name+".png", format="png", dpi=300 )
 
-
 def getMassPoints(folder):
   print "getMassPoints\n"
   paths = [os.path.join(folder,o) for o in os.listdir(folder) if os.path.isdir(os.path.join(folder,o))]
@@ -53,7 +58,6 @@ def getMassPoints(folder):
   for tmp in paths:
     tmp = tmp.replace(folder+"/", '')
     runs.append(tmp)
-    #print tmp
 
   med_list = []
   dm_list = []
@@ -77,20 +81,24 @@ def getMassPoints(folder):
 
 def getSRs(filename):
   print "getSRs "+filename
+  sr1 = 0
+  sr2 = 0
+  sr3 = 0
+  sr4 = 0
   with open(filename) as f:
     for line in f.readlines():
       if "Total weight of SR1 events normalised to luminosity:" in line:
         words = line.split(' ')
-        sr1 = float(words[-1])
+        sr1 += float(words[-1])
       if "Total weight of SR2 events normalised to luminosity:" in line:
         words = line.split(' ')
-        sr2 = float(words[-1])
+        sr2 += float(words[-1])
       if "Total weight of SR3 events normalised to luminosity:" in line:
         words = line.split(' ')
-        sr3 = float(words[-1])
+        sr3 += float(words[-1])
       if "Total weight of SR4 events normalised to luminosity:" in line:
         words = line.split(' ')
-        sr4 = float(words[-1])
+        sr4 += float(words[-1])
   #print sr1, sr2, sr3, sr4
   return sr1, sr2, sr3, sr4
 
@@ -115,10 +123,10 @@ def nearestPointInterpolator(med, dm, folder, sqrts):
       sr1, sr2, sr3, sr4 = getSRs(foldername+"/Atom.signal")
       print "nearestPointInterpolator: getSRs for med", j, " and dm", i, " \n"
       # To avoid division by 0
-      sr1 += 0.00000001
-      sr2 += 0.00000001
-      sr3 += 0.00000001
-      sr4 += 0.00000001
+      sr1 += 0.00000000001
+      sr2 += 0.00000000001
+      sr3 += 0.00000000001
+      sr4 += 0.00000000001
       mu = min(sr1_lim/sr1, sr2_lim/sr2, sr3_lim/sr3, sr4_lim/sr4)
       limit = sqrt(sqrt(mu))
       points.append([i, j])
@@ -128,19 +136,17 @@ def nearestPointInterpolator(med, dm, folder, sqrts):
 
 def linearInterpolator(med, dm, folder, sqrts, fillInEmpty = None):
 	print "linearInterpolator\n"
-	for i in dm:
-		#print str(sqrts)+"TeV_"+str(i)+"GeV SR1\n"
-		sr1_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR1", "lim")
-		sr2_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR2", "lim")
-		sr3_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR3", "lim")
-		sr4_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR4", "lim")
-
 
 	limits = list()
 
 	for j in med:
 		thisrow = list()
 		for i in dm:
+			#print str(sqrts)+"TeV_"+str(i)+"GeV SR1\n"
+			sr1_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR1", "lim")
+			sr2_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR2", "lim")
+			sr3_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR3", "lim")
+			sr4_lim = getData(str(sqrts)+"TeV_"+str(i)+"GeV SR4", "lim")
 			foldername = folder+"/Med"+str(j)+"_DM"+str(i)
 			if not os.path.isfile(foldername+"/Atom.signal"):
 				if fillInEmpty is not None:
@@ -156,13 +162,13 @@ def linearInterpolator(med, dm, folder, sqrts, fillInEmpty = None):
 			sr2 += 0.00000001
 			sr3 += 0.00000001
 			sr4 += 0.00000001
-			print "sr_lim/sr ", sr1_lim/sr1, sr2_lim/sr2, sr3_lim/sr3, sr4_lim/sr4
+			print "sr_lim/sr ", sr1_lim/sr1, sr2_lim/sr2, sr3_lim/sr3, sr4_lim/sr4, "\n"
 			mu = min(sr1_lim/sr1, sr2_lim/sr2, sr3_lim/sr3, sr4_lim/sr4)
 			limit = sqrt(sqrt(mu))
 			thisrow.append(limit)
 			
 		limits.append(thisrow)
-	print dm, med, limits
+	print "DM, Med, limits", dm, med, limits
 	return interpolate.interp2d(dm, med, limits, kind='linear')
 
 def main():
@@ -205,7 +211,12 @@ def main():
 			#tmp.append(float(invdisttree(np.array([x, y]), nnear = 4, p=1)))
 		zs.append(tmp)
 
-	plotGrid(xgrid, ygrid, zs, dm, med, folder, sqrts)
+	for x in range(2500):
+		if interp(x,1000) > 2.:
+			print x
+			break
+      
+	plotGrid(xgrid, ygrid, zs, dm, med, folder, sqrts, "plot")
 
 if __name__ == "__main__":
   main()
